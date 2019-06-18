@@ -1,0 +1,38 @@
+
+
+.errors
+{
+    background-color: #f2dede !important;
+}
+.creators
+{
+    background-color: #dff0d8 !important;
+}
+.alerts {
+    background-color: #fcf8e3 !important;
+}
+.info{
+    background-color: #d9edf7 !important;
+}
+#registros
+{
+    background:  #d9edf7;
+    padding: .5em;
+    font-weight: bold;
+}
+#totalR{
+    background: #dff0d8;
+    padding: .5em;
+    font-weight: bold;
+}
+
+#totalE{
+    background: #f2dede;
+    padding: .5em;
+    font-weight: bold;
+}
+#totalA{
+    background: #fcf8e3;
+    padding: .5em;
+    font-weight: bold;
+}

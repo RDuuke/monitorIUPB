@@ -1,0 +1,66 @@
+<div class="modal fade bd-example-modal-lg" id="addPermissionModal"tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">[Asignación de permisos]</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div id="message_form"></div>
+        {% if getP(modulo_plataforma) == lectura_escritura  %}
+        <div class="ed-container no-padding">
+            <div class="ed-item s-100">
+                <br>
+                <form id="addPermissionForm" method="POST">
+                    <div class="ed-container no-padding">
+                        <div class="ed-item s-100 l-50 flex-column justify-center">
+                        <label for="modules" class="text-capitalize">Módulos</label>
+                        <select name="modules" id="modules">
+                            {% for module in modules %}
+                                <option value="{{ module.id}}">{{ module.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                        </div>
+                        <div class="ed-item s-100 l-50">
+                        <table class="s-100">
+                            <thead>
+                                <tr>
+                                    <td class="text-right text-capitalize">Lectura</td>
+                                    <td class="text-right text-capitalize">Escritura</td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-right"><input type="checkbox" name="reading" id="reading" value="1"></td>
+                                    <td class="text-right"><input type="checkbox" name="writing" id="writing" value="2"></td>
+                                    <td class="flex l-main-end"><a data-toggle='tooltip' title='Agregar permisos' href="{{ path_for('admin.student.permission') }}" id="permission" class="btn btn-success text-capitalize">Agregar</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                    </div>
+                </form>
+                <br>
+            </div>
+            {% endif %}
+            <div class="separator"></div>
+            <table class="s-100" id="tablePermission">
+            <thead>
+                <tr>
+                    <td class="text-left text-capitalize">Módulos</td>
+                    <td class="text-center text-capitalize">Lectura</td>
+                    <td class="text-center text-capitalize">Escritura</td>
+                    {% if getPermission(modulo_plataforma, auth.user.id) == 3  %}
+                    <td class="text-right text-capitalize">Remover</td>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+    </div>
+  </div>
+</div>

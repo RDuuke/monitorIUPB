@@ -1,0 +1,115 @@
+{% extends "template/template.twig" %}
+{% block content %}
+<div class="ed-container full">
+    <div class="separator"></div>
+    <div class="ed-item s-100 l-offset-5 l-90 content-home">
+        <div class="separator"></div>
+        <div class="ed-container full no-padding">
+            {% if (getP(modulo_plataforma) >= lectura)  %}
+                <div class="ed-item s-100 l-25 text-center">
+                    <div class="content-icon">
+                        <a href="{{ path_for('admin.users') }}">
+                            <i data-toggle="tooltip" data-placement="top" title="Gestión  de usuarios monitor" class="size_3em fa fa-user"></i> <br>
+                            Módulo de usuarios monitor
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+            {% if (getP(modulo_campus) >= lectura)  %}
+                <div class="ed-item s-100 l-25 text-center">
+                    <div class="content-icon">
+                        <a href="{{ path_for('admin.students') }}">
+                            <i data-toggle="tooltip" data-placement="top" title="Gestión de usuarios campus" class="size_3em fa fa-users"></i> <br>
+                            Módulo de usuarios plataforma
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+            {#
+                {% if (getP(modulo_instancias) >= lectura) %}
+                    <div class="ed-item s-100 l-25 text-center">
+                        <div class="content-icon">
+                            <a href="{{ path_for('admin.instance') }}">
+                                <i class="size_3em fa fa-cube"></i> <br>
+                                Módulo de instancias
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if (getP(modulo_instituciones) >= lectura) %}
+                    <div class="ed-item s-100 l-25 text-center">
+                        <div class="content-icon">
+                            <a href="{{ path_for('admin.institution') }}">
+                                <i class="size_3em fa fa-institution"></i> <br>
+                                Módulo de instituciones
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+            #}
+            {% if (getP(modulo_programas) >= lectura) %}
+            <div class="ed-item s-100 l-25 text-center">
+                <div class="content-icon">
+                    <a href="{{ path_for('admin.program') }}">
+                        <i data-toggle="tooltip" data-placement="top" title="Gestión de programas" class="size_3em fa fa-leanpub"></i> <br>
+                        Módulo de programas
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+            {% if (getP(modulo_cursos) >= lectura) %}
+            <div class="ed-item s-100 l-25 text-center">
+                <div class="content-icon">
+                    <a href="{{ path_for('admin.courses') }}">
+                        <i data-toggle="tooltip" data-placement="top" title="Gestión de cursos" class="size_3em fa fa-list-alt"></i> <br>
+                        Módulo de cursos
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+            {% if (getP(modulo_matriculas) >= lectura) %}
+            <div class="ed-item s-100 l-25 text-center">
+                <div class="content-icon">
+                    <a href="{{ path_for('admin.register') }}">
+                        <i data-toggle="tooltip" data-placement="top" title="Gestión de matriculas" class="size_3em fa fa fa-drivers-license-o"></i> <br>
+                        Módulo de matriculas
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+            {% if (getP(modulo_busqueda) >= lectura) %}
+            <div class="ed-item s-100 l-25 text-center">
+                <div class="content-icon">
+                    <a href="{{ path_for('admin.search') }}">
+                        <i data-toggle="tooltip" data-placement="top" title="Búsqueda" class="size_3em fa fa-search"></i><br>
+                        Módulo de búsqueda
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+            {% if (getP(modulo_reporte) == lectura_escritura) %}
+                <div class="ed-item s-100 l-25 text-center">
+                    <div class="content-icon">
+                        <a href="{{ path_for('admin.stats') }}">
+                            <i data-toggle="tooltip" data-placement="top" title="Reporte" class="size_3em fa fa-table"></i></i><br>
+                            Módulo de reportes
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+            {#
+                {% if (getP(modulo_estadistica) >= lectura) %}
+                    <div class="ed-item s-100 l-25 text-center">
+                        <div class="content-icon">
+                            <a href="{{ path_for('admin.search.report') }}">
+                                <i data-toggle="tooltip" data-placement="top" title="Estadisticas" class="size_3em fa fa-area-chart"></i><br>
+                                Módulo de estadistica
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+             #}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% if flash('errors') is not empty %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    {% for msg in flash('errors') %}
+        <p>{{ msg }}.</p>
+    {% endfor %}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+
+{% if flash('creators') is not empty %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {% for msg in flash('creators') %}
+            <p>{{ msg }}.</p>
+        {% endfor %}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+{% endif %}

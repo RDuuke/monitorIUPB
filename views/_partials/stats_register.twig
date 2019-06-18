@@ -1,0 +1,67 @@
+<table>
+    <thead>
+        <tr>
+            <th>Codigo</th>
+            <th>Curso</th>
+            <th>Documento</th>
+            <th>Nombres</th>
+            <th>Apellidos</th>
+            <th>Usuario</th>
+            <th>Rol</th>
+            <th>Fecha</th>
+            <th>Ultimo ingreso</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for register in registers %}
+        <tr>
+            <td>{{ register.curso }}</td>
+            <td>{{ register.course.nombre }}</td>
+            <td>{{ register.student.documento }}</td>
+            <td>{{ register.student.nombres }}</td>
+            <td>{{ register.student.apellidos }}</td>
+            <td>{{ register.usuario }}</td>
+            <td>{{ register.rol }}</td>
+            <td>{{ register.fecha }}</td>
+            <td>{{ getLastEntry(register.curso, register.usuario) }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<script>
+    $('table').DataTable({
+        lengthMenu: [15, 25, 50, 75, 100 ],
+        dom: 'Blfrtip',
+        buttons : [{
+            extend: 'excel',
+            title: 'cantidad_de_matriculas',
+            text: 'Exportar información en excel <i class="fa fa-file-excel-o"></i>',
+            className: 'btn btn-info'
+        }],
+        language: {
+            "sProcessing":     "Procesando...",
+            "sLengthMenu":     "Registros por pagina: _MENU_ ",
+            "sZeroRecords":    "No se encontraron resultados",
+            "sEmptyTable":     "Ningún dato disponible en esta tabla",
+            "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+            "sInfoPostFix":    "",
+            "sSearch":         "Buscar:",
+            "sUrl":            "",
+            "sInfoThousands":  ",",
+            "sLoadingRecords": "Cargando...",
+            "paginate": {
+                "first":      "Primera",
+                "last":       "Ultima",
+                "next":       "Siguiente <i class='fa fa-angle-right'></i>",
+                "previous":   "<i class='fa fa-angle-left'></i> Anterior"
+            },
+            "oAria": {
+                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            },
+
+        },
+    });
+</script>

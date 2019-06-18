@@ -1,0 +1,21 @@
+<form id="instanceCreateForm" action="{{ path_for('admin.instance.store') }}" method="post">
+    <div class="ed-container">
+        <div class="ed-item s-100 l-100">
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input name="nombre" type="text" class="form-control" {{ getP(modulo_instancias) == lectura_escritura ? '' : 'readonly' }} required>
+            </div>
+            <div class="form-group">
+                <label for="codigo">Codigo</label>
+                <input name="codigo" type="text" placeholder="00" class="form-control" {{ getP(modulo_instancias) == lectura_escritura ? '' : 'readonly' }} minlength="2"  maxlength="2"  required>
+            </div>
+            <div class="form-group">
+                <label for="bd">Base de datos</label>
+                <input name="bd" type="text" class="form-control" {{ getP(modulo_instancias) == lectura_escritura ? '' : 'readonly' }}>
+            </div>
+            {% if getP(modulo_instancias) == lectura_escritura  %}
+                <button type="submit" class="btn btn-primary">Guardar</button>
+            {% endif %}
+        </div>
+    </div>
+</form>

@@ -1,0 +1,48 @@
+.bg_azul {
+    background-color: #2C9FC2;
+}
+
+.bg_azul_oscuro {
+    background: #1493B2;
+}
+
+.bg_gris_claro, .bg-gray {
+    background: #F2F2F2;
+}
+
+.bg_morado
+{
+    background-color: #732881;
+}
+.bg_morado_ligth
+{
+    background-color: #b76eda;
+}
+.bg_naranja, .bg_naranja:hover{
+  background: #FF9900;
+}
+.bg-green {
+    background-color: #58AF93 !important;
+}
+.btn_campus:hover, .btn_campus2:hover {
+    background: #FFCC33;
+    webkit-transition: all .5s;
+    -moz-transition: all .5s;
+    -ms-transition: all .5s;
+    -o-transition: all .5s;
+    transition: all .5s;
+}
+
+.bg_imagen {
+    background-image: url(http://campusdigital.arrobamedellin.edu.co/campus/laboratorio/web2017/images/slider/contactenos.jpg);
+    background-position: left top;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.btn_campus{
+  webkit-transition: all .5s;
+  -moz-transition: all .5s;
+  -ms-transition: all .5s;
+  -o-transition: all .5s;
+  transition: all .5s;
+}

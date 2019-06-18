@@ -1,0 +1,102 @@
+{% extends "template/template.twig" %}
+{% block styles %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.css"/>
+    <link rel="stylesheet" href="{{ base_url }}/monitor/public/css/modules/uploaduser.css">
+{% endblock %}
+{% block content %}
+    <div class="ed-container full">
+        <div class="ed-item s-100 l-100 padding-2-em-botom">
+            <div class="separator"></div>
+            <h2>Análisis de archivo de carga de usuarios</h2>
+        </div>
+        <div class="ed-item s-100">
+            <a href="{{ path_for('admin.students') }}" class="btn btn-info"> <i class="fa fa-angle-left"></i> Volver</a>
+        </div>
+        <div class="separator"></div>
+        <div class="ed-item s-100">
+            <p> Esta herramienta, permitirá analizar un archivo <a download
+                                                                   href="{{ path_for('admin.student.anexo') }}">Anexo
+                    1</a>, para identificar usuarios repetidos o errores en la carga, luego los registros correctos
+                podran ser cargados a la base de datos, y tambien descargar en el excel el informe.
+            </p>
+            <br>
+            <form action="{{ path_for('admin.upload.students') }}" enctype="multipart/form-data" method="post" id="formFile" class="flex align-item-center">
+                {% if auth.user.id_institucion == codigo_arroba_medellin %}
+                    <select name="codigo_institucion" id="codigo_institucion" required
+                            style="margin-right: 1em;padding: .3em;border-radius: 25px">
+                        {% for institution in institutions %}
+                            <option value="{{ institution.codigo }}">{{ institution.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                {% endif %}
+                <input type="file" name="archive" required accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+                <button class="btn btn-info margin-1-em-horizontal">Analizar</button>
+            </form>
+        </div>
+        <div class="separator"></div>
+        <div id="content-result" class="s-100 ed-item none">
+            <p class="tools-p">Registros: <span data-toggle='tooltip' title='Total de registros' id="registros"></span> -
+                Correctos: <span id="totalR" data-toggle='tooltip' title='Total de usuarios nuevos'></span> - Alertas: <span id="totalA" data-toggle='tooltip' title='Total de alertas'></span> - Errores: <span
+                        id="totalE" data-toggle='tooltip' title='Total de usuarios existentes'></span> -
+                <button data-toggle='tooltip' title='Descargar registros de la tabla'
+                        class="btn none fadein download-data btn-info">Descargar
+                </button>
+                -
+                <button data-toggle='tooltip' title='Registrar usuarios correctos' id="cargar" class="btn btn-success"
+                        data-action="{{ path_for('admin.student.proccess') }}">Procesar resultados
+                </button>
+                -
+                <label for="alertsT" data-toggle="tooltip" title="Las alertas se procesaran, creando una nueva cuenta con los datos de la tabla">¿Cargar las alertas? <input type="checkbox" name="alertsT" value="1" id="alertsT"/></label>
+            </p>
+            <br><br>
+            <table id="tableResult">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th> {{ "Usuario" | title }}</th>
+                    <th> {{ "nombres" | title }}</th>
+                    <th> {{ "Apellidos" | title }}</th>
+                    <th> {{ "Documento" | title }}</th>
+                    <th> {{ "institucion" | title }}</th>
+                    <th> {{ "Codigo" | title }}</th>
+                    <th> {{ "Mensaje" | title }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <table id="tableResponse" class="none">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th> {{ "Usuario" | title }}</th>
+                <th> {{ "nombres" | title }}</th>
+                <th> {{ "Apellidos" | title }}</th>
+                <th> {{ "Documento" | title }}</th>
+                <th> {{ "institucion" | title }}</th>
+                <th> {{ "Codigo" | title }}</th>
+                <th> {{ "Mensaje" | title }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+    </div>
+
+{% endblock %}
+{% block scripts %}
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="//unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+    <script src="{{ base_url }}/monitor/public/js/function.js"></script>
+
+    <script src="{{ base_url }}/monitor/public/js/modules/upload_users.js"></script>
+{% endblock %}

@@ -1,0 +1,51 @@
+<table id="table_result">
+    <thead>
+    <tr>
+        <td>Documento</td>
+        <td>Usuario</td>
+        <td>Nombres</td>
+        <td>Apellidos</td>
+        <td>Teléfono</td>
+    </tr>
+    </thead>
+    <tbody>
+    {% for student in students %}
+    <tr>
+        <td>{{ student.documento }}</td>
+        <td><a href="{{ path_for( "admin.search.program.course.student.data", { 'id' : student.id }) }}">{{ student.usuario }}</a></td>
+        <td>{{ student.nombres }}</td>
+        <td>{{ student.apellidos }}</td>
+        <td>{{ student.telefono }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<script>
+    $('table').DataTable({
+        lengthMenu: [15, 25, 50, 75, 100 ],
+        language: {
+            "sProcessing":     "Procesando...",
+            "sLengthMenu":     "Registros por pagina: _MENU_ ",
+            "sZeroRecords":    "No se encontraron resultados",
+            "sEmptyTable":     "Ningún dato disponible en esta tabla",
+            "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+            "sInfoPostFix":    "",
+            "sSearch":         "Buscar:",
+            "sUrl":            "",
+            "sInfoThousands":  ",",
+            "sLoadingRecords": "Cargando...",
+            "paginate": {
+                "first":      "Primera",
+                "last":       "Ultima",
+                "next":       "Siguiente <i class='fa fa-angle-right'></i>",
+                "previous":   "<i class='fa fa-angle-left'></i> Anterior"
+            },
+            "oAria": {
+                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            }
+        },
+    });
+</script>

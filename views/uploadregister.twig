@@ -1,0 +1,77 @@
+{% extends "template/template.twig" %}
+{% block styles %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.css"/>
+    <link rel="stylesheet" href="{{ base_url }}/monitor/public/css/modules/uploaduser.css">
+{% endblock %}
+{% block content %}
+    <div class="ed-container full">
+        <div class="ed-item s-100 l-100 padding-2-em-botom">
+            <div class="separator"></div>
+            <h2>Análisis de archivo de carga de matriculas</h2>
+        </div>
+        <div class="ed-item s-100">
+            <a href="{{ path_for('admin.register') }}" class="btn btn-info"> <i class="fa fa-angle-left"></i> Volver</a>
+        </div>
+        <div class="separator"></div>
+        <div class="ed-item s-100">
+            <p>
+                Esta aplicación, permitirá analizar un archivo <a download href="{{ path_for('admin.archive.anexo') }}">Anexo
+                    2</a>, para identificar usuarios repetidos o errores en la carga. Descargue el formato Anexo 2 a
+                continuación y una vez diligenciado, adjúntelo haciendo clic en el botón "Seleccionar archivo".
+            </p>
+            <br>
+            <form action="{{ path_for('admin.upload.register') }}" enctype="multipart/form-data" method="post"
+                  id="formFile">
+                {% if auth.user.id_institucion == codigo_arroba_medellin %}
+                    <select name="codigo_institucion" id="codigo_institucion" required
+                            style="margin-right: 1em;padding: .3em;border-radius: 25px">
+                        {% for institution in institutions %}
+                            <option value="{{ institution.codigo }}">{{ institution.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                {% endif %}
+                <input type="file" name="archive" required
+                       accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+                <button class="btn btn-primary">Analizar</button>
+            </form>
+        </div>
+        <div class="ed-item s-100 none" id="content-result">
+            <br>
+            <p class="tools-p">Registros: <span id="registros" data-toggle='tooltip' title='Total de registros'></span> - Correctas: <span
+                        id="totalR" data-toggle='tooltip' title='Total de registros correctos (Matrículas nuevas)'></span> <!-- Alertas: <span id="totalA"></span>--> - Errores: <span id="totalE" data-toggle='tooltip' title='Total de registros incorrectos (Matrículas existentes)'></span> -
+                <button class="btn none fadein download-data btn-info">Descargar</button>
+                -
+                <button data-toggle='tooltip' title='Registrar usuarios correctos' id="cargar" class="btn btn-success"
+                        data-action="{{ path_for('admin.register.proccess') }}">Procesar resultados
+                </button>
+            </p>
+            <br>
+            <table id="tableResult" class="fadein">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th> {{ "curso" | title }}</th>
+                    <th> {{ "usuario" | title }}</th>
+                    <th> {{ "rol" | title }}</th>
+                    <th> {{ "codigo" | title }}</th>
+                    <th> {{ "mensaje" | title }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+    <script src="{{ base_url }}/monitor/public/js/function.js"></script>
+    <script src="{{ base_url }}/monitor/public/js/modules/upload_register.js"></script>
+{% endblock %}

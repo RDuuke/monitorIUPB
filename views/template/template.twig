@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>@Monitor</title>
+    <link href="http://digital.arrobamedellin.edu.co/campus/monitor/templates/arrobamedellin_web_2017/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ base_url }}/css/ed-grid.min.css" />
+    <link rel="stylesheet" href="{{ base_url }}/css/template.css" />
+    {% block styles %}{% endblock %}
+
+</head>
+
+<body class="{{ auth.check == true ? '' : 'bg_azul' }}">
+    <!--<header class="bg_azul ed-container full ">
+        <div class="ed-item l-20">
+            <a href="" class="logo"><img src="http://campusdigital.arrobamedellin.edu.co/campus/monitor/images/template/logo.svg" alt=""></a>
+        </div>
+        <div class="ed-item l-60 flex">
+            <ul class="flex">
+                {% if auth.check %}
+                    <li><a href="">Inicio</a></li>
+                    <li><a href="">Módulos</a></li>
+                    <li><a href="">Herramientas</a></li>
+                    <li><a href="{{ path_for('signout') }}">Cerrar sesión</a></li>
+                {% else %}
+                    <li><a href="">Inicio</a></li>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="ed-item l-20 flex">
+            <a href="#" class="btn bg_naranja">ingresar al campus</a>
+        </div>
+
+    </header>
+    <div class="ed-container full bg_imagen banner_logo flex">
+        <img src="http://campusdigital.arrobamedellin.edu.co/campus/monitor/images/template/logo_peq.png" alt="">
+    </div>-->
+    {% if auth.check %}
+        <header class="bg_morado">
+            <div class="ed-container full">
+                <div class="ed-item s-100 l-40 text-center">
+                    <!--<img class="lupa" src="{{ base_url }}/monitor/resources/images/lupa.png" alt="">-->
+                </div>
+                <nav class="ed-item s-100 l-60 ed-container">
+                    <div class="ed-item s-100">
+                        <ul class="menu-username">
+                            <li>
+                                <a href="" class="parent btn-username">{{ auth.user.usuario }} <i class="fa fa-caret-down"></i></a>
+                                <ul class="dropdown-1 username none">
+                                    <li><a href="{{ path_for('signout') }}">Cerrar sesión</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="ed-item s-100 p-relative">
+                        <ul id="menu" class="p-absolute flex">
+                            <li class="{{ menu_active == '' ? 'in' : ''}}"><a href="{{ path_for('admin.home') }}">Inicio</a></li>
+                            <li class="{{ menu_active == 'Módulo' ? 'in' : ''}}">
+                                <a href="" class="parent">Módulos <i class="fa fa-caret-down"></i></a>
+                                <ul class="dropdown-1 none">
+                                    {% if getP(modulo_plataforma) >= lectura %}
+                                        <li><a class="parent" href="">Usuarios @Monitor <i class="fa fa-caret-down"></i></a>
+                                            <ul class="dropdown-2 none">
+                                                <li><a href="{{ path_for('admin.users') }}">Listar</a></li>
+                                                {% if getP(modulo_plataforma) >= lectura_escritura %}
+                                                    <li><a href="{{ path_for('admin.user.add') }}">Agregar</a></li>
+                                                {% endif %}
+                                            </ul>
+                                        </li>
+                                    {% endif %}
+
+                                    {% if getP(modulo_campus) >= lectura %}
+                                        <li>
+                                            <a class="parent" href="">Usuarios Campus <i class="fa fa-caret-down"></i></a>
+                                            <ul class="dropdown-2 none">
+                                                <li><a href="{{ path_for('admin.students') }}">Listar</a></li>
+                                                {% if getP(modulo_campus) >= lectura_escritura %}
+                                                    <li><a href="{{ path_for('admin.student.add') }}">Agregar</a></li>
+                                                    <li><a href="{{ path_for('admin.view.students.upload') }}">Importar masivamente</a></li>
+                                                    <li><a href="{{ path_for('admin.view.student.upload.archive') }}">Archivar masivamente</a></li>
+                                                {% endif %}
+                                            </ul>
+                                        </li>
+                                    {% endif %}
+
+                                    {% if getP(modulo_instancias) >= lectura %}
+                                        <li>
+                                            <a class="parent" href="">Instancias <i class="fa fa-caret-down"></i></a>
+                                            <ul class="dropdown-2 none">
+                                                <li><a href="{{ path_for('admin.instance') }}">Listar</a></li>
+                                                {% if getP(modulo_instancias) >= lectura_escritura %}
+                                                    <li><a href="{{ path_for('admin.instance.add') }}">Agregar</a></li>
+                                                {% endif %}
+                                            </ul>
+                                        </li>
+                                    {% endif %}
+
+                                    {% if getP(modulo_instituciones) >= lectura %}
+                                        <li>
+                                            <a class="parent" href="">Instituciones <i class="fa fa-caret-down"></i></a>
+                                            <ul class="dropdown-2 none">
+                                                <li><a href="{{ path_for('admin.institution') }}">Listar</a></li>
+                                                {% if getP(modulo_instituciones) >= lectura_escritura %}
+                                                    <li><a href="{{ path_for('admin.institution.add') }}">Agregar</a></li>
+                                                {% endif %}
+                                            </ul>
+                                        </li>
+                                    {% endif %}
+
+                                    {% if getP(modulo_programas) >= lectura %}
+                                        <li>
+                                            <a class="parent" href="">Programas <i class="fa fa-caret-down"></i></a>
+                                            <ul class="dropdown-2 none">
+                                                <li><a href="{{ path_for('admin.program') }}">Listar</a></li>
+                                                {% if getP(modulo_programas) >= lectura_escritura %}
+                                                    <li><a href="{{ path_for('admin.program.add') }}">Agregar</a></li>
+                                                {% endif %}
+                                            </ul>
+                                        </li>
+                                    {% endif %}
+
+                                    {% if getP(modulo_cursos) >= lectura %}
+                                        <li>
+                                            <a class="parent" href="">Cursos <i class="fa fa-caret-down"></i></a>
+                                            <ul class="dropdown-2 none">
+                                                <li><a href="{{ path_for('admin.courses') }}">Listar</a></li>
+                                                {% if getP(modulo_cursos) >= lectura_escritura %}
+                                                    <li><a href="{{ path_for('admin.course.add') }}">Agregar</a></li>
+                                                    <li><a href="{{ path_for('admin.upload.courses') }}">Importar masivamente</a></li>
+                                                {% endif %}
+                                            </ul>
+                                        </li>
+                                    {% endif %}
+
+                                    {% if getP(modulo_matriculas) >= lectura %}
+                                        <li>
+                                            <a class="parent" href="">Matriculas <i class="fa fa-caret-down"></i></a>
+                                            <ul class="dropdown-2 none">
+                                                <li><a href="{{ path_for('admin.register') }}">Listar</a></li>
+                                                {% if getP(modulo_matriculas) >= lectura_escritura %}
+                                                    <li><a href="{{ path_for('admin.register.add') }}">Agregar</a></li>
+                                                    <li><a href="{{ path_for('admin.upload.register') }}">Importar masivamente</a></li>
+                                                    <li><a href="{{ path_for('admin.view.student.upload.deenroll') }}">Desmatricular masivamente</a></li>
+                                                {% endif %}
+                                            </ul>
+                                        </li>
+                                    {% endif %}
+                                    {% if getP(modulo_busqueda) >= lectura %}
+                                        <li><a href="{{ path_for('admin.search') }}">Búsqueda </a></li>
+                                    {% endif %}
+                                    {% if getP(modulo_estadistica) >= lectura %}
+                                        <li><a href="{{ path_for('admin.search.report') }}">Estadisticas </a></li>
+                                    {% endif %}
+                                    {% if getP(modulo_reporte) >= lectura %}
+                                        <li>
+                                            <a class="parent" href="">Reporte <i class="fa fa-caret-down"></i></a>
+                                            <ul class="dropdown-2 none">
+                                                {% if getP(modulo_estadistica) >= lectura_escritura %}
+                                                <li><a href="{{ path_for('admin.stats') }}">Usuarios</a></li>
+                                                {% endif %}
+                                                <li><a href="{{ path_for('admin.stats.register') }}">Matriculas semestrales</a></li>
+                                            </ul>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+                            {% if getP(modulo_busqueda) >= lectura %}
+                                <li class="{{ menu_active == 'Búsqueda' ? 'in' : ''}}">
+                                    <a class="parent" href="">Búsqueda <i class="fa fa-caret-down"></i></a>
+                                    <ul class="dropdown-1 none">
+                                        <li><a href="{{ path_for('admin.search.program') }}">Búsqueda programas</a></li>
+                                        <li><a href="{{ path_for('admin.search.course') }}">Búsqueda cursos</a></li>
+                                        <li><a href="{{ path_for('admin.search.student') }}">Búsqueda usuarios</a></li>
+                                    </ul>
+                                </li>
+                            {% endif %}
+                            <!--<li class="{{ menu_active == 'Herramientas' ? 'in' : ''}}">
+                                <a href="" class="parent">Herramientas <i class="fa fa-caret-down"></i></a>
+                                <ul class="dropdown-1 none">
+                                    {% if getP(modulo_campus) >= lectura_escritura %}
+                                        <li><a href="{{ path_for('admin.view.students.upload') }}">Crear usuarios campus masivamente (Anexo1)</a></li>
+                                        <li><a href="{{ path_for('admin.view.student.upload.archive') }}">Archivar usuarios campus masivamente (Anexo10)</a></li>
+                                    {% endif %}
+                                    {% if getP(modulo_matriculas) >= lectura_escritura %}
+                                        <li><a href="{{ path_for('admin.upload.register') }}">Crear matrículas masivamente (Anexo2)</a></li>
+                                        <li><a href="{{ path_for('admin.view.student.upload.deenroll') }}">Desmatricular masivamente (Anexo11)</a></li>
+                                    {% endif %}
+                                    {% if modulo_cursos >= lectura_escritura  %}
+                                        <li><a href="{{ path_for('admin.upload.courses') }}">Crear cursos masivamente (Anexo3)</a></li>
+                                    {% endif %}
+                                </ul>
+                            </li>-->
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </header>
+        <section id="add-and-router" class="bg-gray">
+            <div class="ed-container full full-height">
+                <div class="ed-item s-100 l-10 l-cross-center  p-relative">
+                    <ul class="menu-add-module">
+                        <li>
+                            <a class="btn-username parent block" href="">Agregar <i class="fa fa-plus"></i></a>
+                            <ul class="dropdown-1 none">
+                                {% if getP(modulo_plataforma) >= lectura_escritura %}
+                                    <li><a href="{{ path_for('admin.user.add') }}"><i class="fa fa-plus"></i>Agregar Usuario @Monitor</a></li>
+                                {% endif %}
+                                {% if getP(modulo_campus) >= lectura_escritura %}
+                                    <li><a href="{{ path_for('admin.student.add') }}"><i class="fa fa-plus"></i>Agregar Usuario Campus</a></li>
+                                {% endif %}
+                                {% if getP(modulo_instancias) >= lectura_escritura %}
+                                    <li><a href="{{ path_for('admin.instance.add') }}"><i class="fa fa-plus"></i>Agregar Instancia</a></li>
+                                {% endif %}
+                                {% if getP(modulo_instituciones) >= lectura_escritura %}
+                                    <li><a href="{{ path_for('admin.institution.add') }}"><i class="fa fa-plus"></i>Agregar Institución</a></li>
+                                {% endif %}
+                                {% if getP(modulo_programas) >= lectura_escritura %}
+                                    <li><a href="{{ path_for('admin.program.add') }}"><i class="fa fa-plus"></i>Agregar Programa</a></li>
+                                {% endif %}
+                                {% if getP(modulo_cursos) >= lectura_escritura %}
+                                    <li><a href="{{ path_for('admin.course.add') }}"><i class="fa fa-plus"></i>Agregar Curso</a></li>
+                                {% endif %}
+                                {% if getP(modulo_matriculas) >= lectura_escritura %}
+                                    <li><a href="{{ path_for('admin.register.add') }}"><i class="fa fa-plus"></i>Agregar Matrícula</a></li>
+                                {% endif %}
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="ed-item s-100 l-85 l-cross-center">
+                    <nav>
+                        <ul id="breadcrumb" class="flex">
+                            <ol><a href="{{ path_for('admin.home') }}">Inicio</a></ol>
+                            {% if module_name is defined %}
+                                {% if module_name is iterable %}
+                                    {% for module in module_name %}
+                                        <ol><i class="fa fa-angle-right"></i></ol>
+                                        {% if "#" in module %}
+                                            {% set m = module | split("#") %}
+                                            <ol><a href="{{ path_for(m[1]) }}">{{ m[0] | title }}</a></ol>
+                                        {% else %}
+                                            <ol>{{ module | title }}</ol>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                    <ol><i class="fa fa-angle-right"></i></ol>
+                                    <ol>{{ module_name | title }}</ol>
+                                {% endif %}
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+    {% include "_partials/flash_message.twig" %}
+
+    {% block content %}{% endblock %}
+    <footer class="bg-green padding-2-em-all text-right">
+        <img class="logo-footer" src="http://arrobamedellin.edu.co/images/template/logo.svg" alt="">
+    </footer>
+    {% block modales %}{% endblock %}
+    <div id="block_pantalla" class="none"></div>
+    <span id="time" style="display:none"></span>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <script>
+        let miliToMinutes = 1000/60;
+        function setTime() {
+            $("#time").html(Date.now());
+        }
+        function issingIn()
+        {
+            console.log(new Date(Date.now()));
+            let timeActual = new Date(1000*Math.round(Date.now()/1000));
+
+            let timeAnterior = new Date(1000*Math.round($("#time").html()/1000));
+
+            console.log(timeActual.getMinutes() + " - " +timeAnterior.getMinutes());
+            let minutes = timeActual.getMinutes() - timeAnterior.getMinutes();
+
+            console.log(minutes);
+
+        }
+        setTime();
+    $.ajaxSetup({
+            // Disable caching of AJAX responses
+            cache: true
+        });
+        $(document).ajaxStart(function () {
+
+            issingIn()
+            $(document.body).css({
+               'cursor' : 'progress'
+           });
+            $("#block_pantalla").fadeIn();
+
+        }).ajaxStop(function () {
+            $(document.body).css({
+               'cursor' : 'default'
+            });
+            $("#block_pantalla").fadeOut();
+        });
+        var getUri = "http://"+window.location.host;
+    </script>
+{% block scripts %}{% endblock %}
+    <script>
+        $('body').tooltip({selector: '[data-toggle="tooltip"]', placeholder: 'top'});
+    </script>
+    <script src="{{ base_url }}/js/template.js"></script>
+</body>
+</html>

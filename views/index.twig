@@ -1,0 +1,29 @@
+{% extends "template/template.twig" %}
+{% block content %}
+<div id="content-login" class="ed-container flex">
+    <div class="ed-item s-60 ">
+        <div class="card text-center box-shadow border-radius-all-25-px">
+            <div class="card-header bg_morado text-white border-radius-top-left-25-px border-radius-top-right-25-px">
+                <h2 class="text-center">@Monitor</h2>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Bienvenido al Sistema de Gestión de @Medellín.</h5>
+                <p class="card-text">Por favor ingrese sus datos de acceso para acceder. Si tiene alguna dificultad, por favor contacte al área de Aplicaciones y Servicios.</p>
+                <div class="separator"></div>
+                <form action="{{ path_for('signin') }}" method="post">
+                    <div class="form-group text-center">
+                        <label for="exampleInputEmail1">Usuario</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="usuario" required>
+                    </div>
+                    <div class="form-group text-center">
+                        <label for="exampleInputPassword1">Contraseña</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1" name="clave" required>
+                    </div>
+                      <button type="submit" class="btn bg_morado text-white centro">Iniciar sesión</button>
+                </form>
+            </div>
+            <div class="card-footer text-muted bg_morado border-radius-bottom-left-25-px border-radius-bottom-right-25-px"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}

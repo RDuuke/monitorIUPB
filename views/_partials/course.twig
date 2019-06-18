@@ -1,0 +1,48 @@
+<form id="programCreateForm" action="{{ path_for('admin.courses.store') }}" method="post">
+    <div class="ed-container">
+        <div class="ed-item s-100 l-100">
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input name="nombre" type="text" class="form-control" {{ getP(modulo_cursos) == lectura_escritura ? '' : 'readonly' }} required>
+            </div>
+            <div class="form-group">
+                <label for="nombre_corto">Nombre corto</label>
+                <input name="nombre_corto" type="text" class="form-control" {{ getP(modulo_cursos) == lectura_escritura ? '' : 'readonly' }}>
+            </div>
+            <label for="programa">Programa</label>
+            <select name="id_programa" id="id_programa" class="form-control" required>
+                <option value="">Seleccione una opción</option>
+                {% for program in programs %}
+                    <option value="{{ program.codigo }}">{{ program.nombre }}</option>
+                {% endfor %}
+            </select>
+            {% if getP(modulo_cursos) == lectura_escritura  %}
+                <div class="form-group">
+                    <label for="codigo">Codigo</label>
+                    <input name="codigo" id="input_codigo" type="text" minlength="3"  maxlength="3" placeholder="000" pattern="[0-9]*" class="form-control" {{ getP(modulo_cursos) == lectura_escritura ? '' : 'readonly' }}  required>
+                </div>
+                <div class="form-group">
+                    <input name="codigo_forma" type="number"  disabled placeholder="00000" class="form-control" min="00000" max="99999">
+                </div>
+            {% endif %}
+            {% if auth.user.id_institucion != codigo_arroba_medellin %}
+                <input name="institucion_id" type="hidden" class="form-control" value="{{ auth.user.id_institucion }}" readonly>
+            {% else %}
+                <div class="form-group">
+                    <select name="institucion_id" id="institucion" class="form-control" required>
+                        <option value="">Seleccione una opción</option>
+                        {% for institucion in institutions %}
+                            <option value="{{ institucion.codigo }}">{{ institucion.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            {% endif %}
+            {% if getP(modulo_cursos) == lectura_escritura %}
+                <div class="form-group">
+                    <br>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</form>

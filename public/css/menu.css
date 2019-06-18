@@ -1,0 +1,75 @@
+#menu {
+    margin: 0;
+    list-style: none;
+    right: 0;
+    bottom: 0;
+}
+#menu > li{
+    z-index: 500;
+    text-align: center;
+    position: relative;
+    padding: 0 60px;
+    margin: 0px 20px;
+    border-bottom: transparent 7px solid;
+    text-transform: capitalize;
+}
+#menu > li:hover, #menu > li.active, .in {
+    border-bottom: #2C9FC2 7px solid !important;
+}
+#menu li a {
+    color: #FFFFFF;
+    text-transform: capitalize !important;
+    font-weight: bold;
+}
+.menu-username li {
+    text-align: right;
+    padding-top: 20px;
+}
+.btn-username {
+    background-color: #009BDD;
+    color: white;
+    padding: .5em 2em;
+    border-radius: 25px;
+}
+.
+.btn-username:hover {
+    color: white !important;
+}
+.dropdown-1{
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: 40px;
+    height: fit-content;
+    min-width: 200px;
+    width: fit-content;
+    margin: 0 auto;
+    padding: 0 1em;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px #9c8d8d;
+    background-color: white;
+}
+.dropdown-1 li {
+    padding: .5em;
+    text-align: left !important;
+}
+.dropdown-1 li a{
+    color: black !important;
+    font-weight: normal !important;
+}
+.dropdown-1.username
+{
+    right: 16px;
+    left: auto;
+    top: 52px;
+}
+.menu-add-module .dropdown-1 {
+    left: 15px;
+    top: 60px;
+    width: 260px;
+    z-index: 10000;
+}
+.menu-add-module .dropdown-1 i{
+    color: #009BDD !important;
+    margin-right: 10px;
+}

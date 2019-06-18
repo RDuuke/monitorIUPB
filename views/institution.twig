@@ -1,0 +1,98 @@
+{% extends "template/template.twig" %}
+{% block styles %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.css"/>
+<style>
+  @media (min-width: 992px){
+    .modal-lg {
+      max-width: 1075px;
+    }
+  }
+</style>
+{% endblock %}
+{% block content %}
+<div class="ed-container full">
+    <div class="ed-item s-100 l-20 margin-2-em-vertical">
+        <h2 class="text-black text-bold">{{ module_name | title }}</h2>
+    </div>
+    <div class="separator"></div>
+    <div class="ed-item s-100 flex">
+        <a href="{{ path_for('admin.home') }}" class="btn btn-info"> <i class="fa fa-angle-left"></i> Volver</a>
+        {% if getP(modulo_instituciones) == lectura_escritura  %}
+        <button class="btn btn-primary addinstitution" data-href="{{ path_for('admin.institution.store') }}">Agregar instituci&oacute;n <i class="fa fa-plus"></i></button>
+        {% endif %}
+    </div>
+    <div class="ed-item s-100">
+    <br>
+        <table id="tb_institution" class="display">
+            <thead>
+                <tr>
+                    <th>ID:</th>
+                    <th> {{ "código" | title }}</th>
+                    <th> {{ "nombre" | title }}</th>
+                    {% if getP(modulo_instituciones) == lectura_escritura  %}
+                    <th></th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+{% block modales %}
+{% include "formularios/institution.twig" %}
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+<script>
+var _td = null;
+var table = $('table').DataTable({
+        lengthMenu: [ 25, 50, 75, 100 ],
+        language: {
+            "sProcessing":     "Procesando...",
+            "sLengthMenu":     "Registros por pagina: _MENU_ ",
+            "sZeroRecords":    "No se encontraron resultados",
+            "sEmptyTable":     "Ningún dato disponible en esta tabla",
+            "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+            "sInfoPostFix":    "",
+            "sSearch":         "Buscar:",
+            "sUrl":            "",
+            "sInfoThousands":  ",",
+            "sLoadingRecords": "Cargando...",
+            "paginate": {
+                "first":      "Primera",
+                "last":       "Ultima",
+                "next":       "Siguiente <i class='fa fa-angle-right'></i>",
+                "previous":   "<i class='fa fa-angle-left'></i> Anterior"
+            },
+            "oAria": {
+                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            }
+        },
+        ajax: {
+            url: getUri + '/panel/institutions/all',
+            dataSrc: ''
+        },
+        columns: [
+            { data: 'id' },
+            { data: 'codigo' },
+            { data: 'nombre' },
+            {% if getP(modulo_instituciones) == lectura_escritura  %}
+            { "data": "id",
+                "render": function (data, type, row, meta) {
+                    return '<a data-toggle="tooltip" title="Eliminar" href="'+getUri+'/panel/institutions/delete/'+data+'" class="institutionEliminar pointer icon_a"><i class="fa fa-trash text-danger"></i></a>&nbsp;<a data-toggle="tooltip" title="Actualizar" href="'+getUri+'/panel/institutions/show/'+data+'" class="institutionshow pointer icon_a" data-href="{{ path_for("admin.institution.update", {id: id}) }}"><i class="fa fa-pencil text-sucess"></i></a>';
+                }
+            }
+            {% endif %}
+          ]
+    });
+</script>
+<script src="{{ base_url }}/monitor/public/js/function.js"></script>
+<script src="{{ base_url }}/monitor/public/js/modules/institution.js"></script>
+{% endblock %}

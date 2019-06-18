@@ -1,0 +1,133 @@
+{% extends "template/template.twig" %}
+{% block styles %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.css"/>
+{% endblock %}
+{% block content %}
+<div class="ed-container full">
+    <div class="ed-item s-100 l-20 margin-2-em-vertical">
+        <h2 class="text-black text-bold">{{ module_name | title }}</h2>
+    </div>
+    <div class="separator"></div>
+    <div class="ed-item s-100 flex">
+        <a href="{{ path_for('admin.home') }}" class="btn btn-info"> <i class="fa fa-angle-left"></i> Volver</a>
+        {% if getP(modulo_matriculas) == lectura_escritura %}
+            <button class="btn btn-primary addregister" data-href="{{ path_for('admin.store.register') }}">Agregar matricula <i class="fa fa-plus"></i></button>
+            <a data-toggle="tooltip" data-placement="top" title="Archivo Anexo2" class="btn btn-info" href="{{ path_for('admin.upload.register') }}">Crear masivamente<i class="fa fa-file-excel-o"></i></a>
+            <a data-toggle="tooltip" data-placement="top" title="Archivo Anexo11" class="btn btn-info" href="{{ path_for('admin.view.student.upload.deenroll') }}">Desmatricular masivamente <i class="fa fa-file-excel-o"></i></a>
+            <a class="btn btn-info download-data" href="" data-toggle="tooltip" data-placement="top" title="Exportar información de la tabla"> Exportar <i class="fa fa-download"></i></a>
+        {% endif %}
+    </div>
+    <div class="ed-item s-100">
+    <br>
+        <table id="tb_register" class="display">
+            <thead>
+                <tr>
+                    <th>A:</th>
+                    <th> {{ "curso" | title }}</th>
+                    <th> {{ "instancia" | title }}</th>
+                    <th> {{ "usuario" | title }}</th>
+                    <th> {{ "rol" | title }}</th>
+                    <th> {{ "fecha" | title }}</th>
+                    {% if getP(modulo_matriculas) == lectura_escritura %}
+                        <th> {{ "acciones" | title }}</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block modales %}
+    {% include "formularios/register.twig" %}
+    {% include "formularios/student.twig" %}
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+
+    <script>
+    var _td = null;
+    var table = $('table').DataTable({
+        lengthMenu: [ 25, 50, 75, 100 ],
+        language: {
+            "sProcessing":     "Procesando...",
+            "sLengthMenu":     "Registros por pagina: _MENU_ ",
+            "sZeroRecords":    "No se encontraron resultados",
+            "sEmptyTable":     "Ningún dato disponible en esta tabla",
+            "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+            "sInfoPostFix":    "",
+            "sSearch":         "Buscar:",
+            "sUrl":            "",
+            "sInfoThousands":  ",",
+            "sLoadingRecords": "Cargando...",
+            "paginate": {
+                "first":      "Primera",
+                "last":       "Ultima",
+                "next":       "Siguiente <i class='fa fa-angle-right'></i>",
+                "previous":   "<i class='fa fa-angle-left'></i> Anterior"
+            },
+            "oAria": {
+                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            }
+        },
+        ajax: {
+            url: getUri + '/panel/register/all',
+            dataSrc: ''
+        },
+        dom: 'Blfrtip',
+        buttons : [
+            {
+                extend: 'excel',
+                title: 'Matriculas',
+                text: 'Exportar información en excel <i class="fa fa-file-excel-o"></i>',
+                className: 'btn btn-info'
+            },
+        ],
+        columns: [
+            { data: 'id' },
+            { data: 'curso' },
+            { data: 'instancia'},
+            { data: 'usuario',
+              "render" : function(data, type, row, meta) {
+                  return '<a data-toggle="tooltip" title="Ver información" href="{{ path_for("admin.students.update", {id : data.id}) }}" data-usuario="'+data+'" class="showUserRegister pointer">'+data+'</a>';
+              }
+            },
+            { data: 'rol' },
+            { data: 'fecha'},
+            {% if getP(modulo_matriculas) == lectura_escritura and auth.user.id_institucion == codigo_arroba_medellin %}
+            { "data": "id",
+              "render": function (data, type, row, meta) {
+                    return '<a data-toggle="tooltip" title="Desmatricular" class="archive_register icon_a" href="'+getUri+'/panel/register/archive/'+data+'" ><i class="fa fa-folder"></i></a>&nbsp;<a data-toggle="tooltip" title="Eliminar" href="'+getUri+'/panel/register/delete/'+data+'" class="registertEliminar pointer icon_a"><i class="fa fa-trash text-danger"></i></a>&nbsp;<a data-toggle="tooltip" title="Actualizar" href="'+getUri+'/panel/register/show/'+data+'" class="registerShow pointer icon_a" data-href="{{ path_for("admin.update.register", {id : data.id}) }}"><i class="fa fa-pencil"></i></a>';
+                    //return '<a>'+data+'<a>';
+                }
+            }
+            {%  elseif getP(modulo_matriculas) == lectura_escritura %}
+            { "data": "id",
+                "render": function (data, type, row, meta) {
+                    return '<a data-toggle="tooltip" title="Desmatricular" class="archive_register icon_a" href="'+getUri+'/panel/register/archive/'+data+'" ><i class="fa fa-folder"></i></a>&nbsp;<a data-toggle="tooltip" title="Actualizar" href="'+getUri+'/panel/register/show/'+data+'" class="registerShow pointer icon_a" data-href="{{ path_for("admin.update.register", {id : data.id}) }}"><i class="fa fa-pencil"></i></a>';
+                    //return '<a>'+data+'<a>';
+                }
+            }
+            {% endif %}
+          ]
+    });
+    //http://localhost:8080/panel/register/delete/id
+    //http://localhost:8080/panel/register/show/id
+    </script>
+    <script src="{{ base_url }}/monitor/public/js/function.js"></script>
+    <script src="{{ base_url }}/monitor/public/js/modules/register.js"></script>
+
+{% endblock %}

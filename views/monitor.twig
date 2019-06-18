@@ -1,0 +1,115 @@
+{% extends "template/template.twig" %}
+{% block styles %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.css"/>
+    <link rel="stylesheet" href="{{ base_url }}/monitor/public/css/modules/tabs.css">
+{% endblock %}
+{% block content %}
+    <div class="ed-container full">
+        <div class="ed-item s-100 l-20 margin-2-em-vertical">
+            <h2 class="text-black text-bold">{{ module_name | title }}</h2>
+        </div>
+        <div class="separator"></div>
+        <div class="ed-item s-100 flex">
+            <a href="{{ path_for('admin.home') }}" class="btn btn-info"> <i class="fa fa-angle-left"></i> Volver</a>
+            {% if getP(modulo_instituciones) == lectura_escritura  %}
+                <button class="btn btn-primary addmonitor" data-href="{{ path_for('admon.monitoreo') }}">Agregar monitor <i class="fa fa-plus"></i></button>
+            {% endif %}
+        </div>
+        <div class="ed-item s-100">
+            <table id="monitor">
+                <thead>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Nombre</th>
+                    <th>URL o IP</th>
+                    <th>Intervalo</th>
+                    <th>Porcentaje</th>
+                    <th>Acciones</th>
+                </tr>
+                </thead>
+            </table>
+            <tbody>
+
+            </tbody>
+        </div>
+    </div>
+{% endblock %}
+{% block modales %}
+    {% include "formularios/monitor.twig" %}
+{% endblock %}
+{% block scripts %}
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+
+    <script>
+        var table = $('table').DataTable({
+            lengthMenu: [ 25, 50, 75, 100 ],
+            language: {
+                "sProcessing":     "Procesando...",
+                "sLengthMenu":     "Registros por pagina: _MENU_ ",
+                "sZeroRecords":    "No se encontraron resultados",
+                "sEmptyTable":     "Ningún dato disponible en esta tabla",
+                "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix":    "",
+                "sSearch":         "Buscar:",
+                "sUrl":            "",
+                "sInfoThousands":  ",",
+                "sLoadingRecords": "Cargando...",
+                "paginate": {
+                    "first":      "Primera",
+                    "last":       "Ultima",
+                    "next":       "Siguiente <i class='fa fa-angle-right'></i>",
+                    "previous":   "<i class='fa fa-angle-left'></i> Anterior"
+                },
+                "oAria": {
+                    "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            },
+            ajax: {
+                url: getUri + '/panel/monitoreo/all',
+                dataSrc: ''
+            },
+            columns: [
+                {
+                    data: null,
+                    defaultContent : "Http(s)"
+                },
+                { data: 'name' },
+                { data: 'url' },
+                { data: 'intervale'},
+                { data: 'countup',
+                    "render": function (data, type, row, meta) {
+                        let html = "";
+                            if (data > 80) {
+                                html = "<span class='badge badge-success'>"+data+"%</span>";
+                            } else if (data < 80 & data > 30) {
+                                html = "<span class='badge badge-warning'>"+data+"%</span>";
+                            } else if (data < 30) {
+                                html = "<span class='badge badge-danger'>"+data+"%</span>";
+                            } else {
+                                html = "<span class='badge badge-secondary'>"+data+"</span>";
+                            }
+                        return html;
+                    }
+                },
+                { data : 'id',
+                    "render" : function (data, type, row, meta) {
+                    console.log(row);
+                        return "" +
+                            "<a data-toggle='tooltip' title='Eliminar' href='"+getUri+"/panel/monitoreo/delete/"+data+"' class='deleteMonitor pointer icon_a'><i class='fa fa-trash text-danger'></i></a>" +
+                            "<a data-toggle='tooltip' title='Editar' data-href='"+getUri+"/panel/monitoreo/update/"+data+"' href='"+getUri+"/panel/monitoreo/show/"+data+"' class='showMonitor pointer icon_a'><i class='fa fa-pencil text-sucess'></i></a>" +
+                            "<a data-toggle='tooltip' title='Pausar' href='"+getUri+"/panel/monitoreo/pause-play/"+data+"' class='pauseMonitor pointer icon_a'><i class='fa "+(row.status == 1 ? "fa-pause-circle" : "fa-play-circle")+" text-secondary'></i></a>" +
+                            "<a data-toggle='tooltip' title='Reiniciar' href='"+getUri+"/panel/monitoreo/reset/"+data+"' class='resetMonitor pointer icon_a'><i class='fa fa-refresh text-secondary'></i></a>" +
+                            "<a data-toggle='tooltip' title='Ver grafica' href='"+getUri+"/panel/monitoreo/details/"+data+"' class='pointer icon_a'><i class='fa fa-desktop text-secondary'></i></a>";
+                    }
+                }
+            ]
+        });
+    </script>
+    <script src="{{ base_url }}/monitor/public/js/function.js"></script>
+    <script src="{{ base_url }}/monitor/public/js/modules/monitor.js"></script>
+{% endblock %}

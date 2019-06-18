@@ -1,0 +1,57 @@
+{% extends "template/template.twig" %}
+{% block styles %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.css"/>
+<link rel="stylesheet" type="text/css" href="{{ base_url }}/monitor/public/css/animate.css"/>
+<style>
+  @media (min-width: 992px){
+    .modal-lg {
+      max-width: 1075px;
+    }
+  }
+</style>
+{% endblock %}
+{% block content %}
+<div class="ed-container full">
+    <div class="ed-item s-100 margin-2-em-vertical">
+        <h2 class="text-black text-bold">Módulo búsqueda usuarios</h2>
+    </div>
+    <div class="separator"></div>
+    <div class="ed-item s-100">
+        <a href="{{ path_for('admin.search') }}" class="btn btn-info"> <i class="fa fa-angle-left"></i> Volver</a>
+    </div>
+    <div class="separator"></div>
+    <div class="ed-item s-100 l-70 l-offset-15">
+
+        <div class="form-group flex">
+            <input class="box-search form-control border-radius-left-25-px-all no-border-radius-right-all" type="text" placeholder="Búsqueda por usuario (usuario@dominio.edu.co) ó documento de identidad">
+            <button id="box-search" route-get="/panel/students/search/" base-route-item="/panel/search/program/courses/usuarios/info/" tipo="students" class="bg_naranja text-white no-border-radius-left-all">Buscar</button>
+        </div>
+    </div>
+    <div class="ed-item s-100 l-70 l-offset-15 padding-2-em-botom">
+            <div id="load" class="none">
+                <div class="sk-circle">
+                    <div class="sk-circle1 sk-child"></div>
+                    <div class="sk-circle2 sk-child"></div>
+                    <div class="sk-circle3 sk-child"></div>
+                    <div class="sk-circle4 sk-child"></div>
+                    <div class="sk-circle5 sk-child"></div>
+                    <div class="sk-circle6 sk-child"></div>
+                    <div class="sk-circle7 sk-child"></div>
+                    <div class="sk-circle8 sk-child"></div>
+                    <div class="sk-circle9 sk-child"></div>
+                    <div class="sk-circle10 sk-child"></div>
+                    <div class="sk-circle11 sk-child"></div>
+                    <div class="sk-circle12 sk-child"></div>
+                </div>
+            </div>
+    </div>
+    <div class="ed-item s-100 list-group"></div>
+</div>
+{% endblock %}
+{% block scripts %}
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+    <script src="{{ base_url }}/monitor/public/js/function.js"></script>
+    <script src="{{ base_url }}/monitor/public/js/modules/search.js"></script>
+{% endblock %}

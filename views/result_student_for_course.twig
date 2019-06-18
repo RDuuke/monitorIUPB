@@ -1,0 +1,95 @@
+{% extends "template/template.twig" %}
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.css"/>
+{% endblock %}
+{% block content %}
+    <div class="separator"></div>
+    <div class="ed-container full">
+        <div class="ed-item s-100 l-50">
+            <h3>Listado de usuarios matriculados</h3>
+            <p><b>Curso:</b> {{ course.nombre | title }}</p>
+            <p><b>Código:</b> {{ course.codigo }}</p>
+        </div>
+        <div class="ed-item s-100 l-30 l-offset-20">
+            <!--<img src="http://sicau.pascualbravo.edu.co:5051/SICAU/Sources/img/pas.png" alt="">-->
+            <!--<img src="http://www.colmayor.edu.co/images/web_new/recuadro_logo-01.png" alt="">-->
+        </div>
+    </div>
+    <div class="separator"></div>
+    <div class="ed-container full search-content">
+        <div class="ed-item s-100">
+            <table>
+                <thead>
+                <tr>
+                    <th>Documento</th>
+                    <th>Nombres</th>
+                    <th>Apellidos</th>
+                    <th>Teléfono</th>
+                    <th>Usuario</th>
+                    <th>Rol</th>
+                    <th>Último ingreso Curso</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for student in students %}
+                    <tr>
+                        <td>{{ student.student.documento }}</td>
+                        <td>{{ student.student.nombres }} </td>
+                        <td>{{ student.student.apellidos }}</td>
+                        <td>{{ student.student.telefono }}</td>
+                        <td><a href="{{ path_for( "admin.search.program.course.student.data", { 'id' : student.student.id }) }}">{{ student.student.usuario }}</a></td>
+                        <td>{{ student.rol }}</td>
+                        <td>{{ getLastEntry(course.codigo, student.student.usuario) }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="separator"></div>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+
+<script>
+     $('table').DataTable({
+       dom: 'Blfrtip',
+         buttons : [{
+             extend: 'excel',
+             title: 'usuarios_por_curso',
+             text: 'Exportar información en excel <i class="fa fa-file-excel-o"></i>',
+             className: 'btn btn-info'
+         }],
+        lengthMenu: [ 10, 25, 50, 75, 100 ],
+         language: {
+             "sProcessing":     "Procesando...",
+             "sLengthMenu":     "Registros por pagina: _MENU_ ",
+             "sZeroRecords":    "No se encontraron resultados",
+             "sEmptyTable":     "Ningún dato disponible en esta tabla",
+             "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+             "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+             "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+             "sInfoPostFix":    "",
+             "sSearch":         "Buscar:",
+             "sUrl":            "",
+             "sInfoThousands":  ",",
+             "sLoadingRecords": "Cargando...",
+             "paginate": {
+                 "first":      "Primera",
+                 "last":       "Ultima",
+                 "next":       "Siguiente <i class='fa fa-angle-right'></i>",
+                 "previous":   "<i class='fa fa-angle-left'></i> Anterior"
+             },
+             "oAria": {
+                 "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                 "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+             }
+         },
+     });
+</script>
+{% endblock %}

@@ -1,0 +1,110 @@
+{% extends "template/template.twig" %}
+{% block styles %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.css"/>
+    <link rel="stylesheet" href="{{ base_url }}/monitor/public/css/modules/tabs.css">
+{% endblock %}
+{% block content %}
+    <div class="ed-container full">
+
+        <div class="ed-item s-100 margin-2-em-vertical">
+            <h2 class="text-bold text-black">
+                Cifras Del Campus Digital @Medellín
+            </h2>
+        </div>
+        <div class="separator"></div>
+        <div class="ed-item s-100 flex">
+            <a href="{{ path_for('admin.home') }}" class="btn btn-info"><i class="fa fa-angle-left"></i> Volver</a>
+            {#<a  class="btn btn-primary">Filtro avanzado &nbsp;<i class="fa fa-cogs"></i></a>#}
+        </div>
+        <div class="separator"></div>
+        <div class="ed-container full ed-item s-100 container-tabs no-padding">
+
+            <div class="ed-item s-100">
+                <nav class="nav-tab">
+                    {% if auth.user.id_institucion == codigo_arroba_medellin or auth.user.id_institucion == codigo_sapiencia %}
+                        <a href="#" data-item="institution" class="link-tab active">Institución</a>
+                    {% endif %}
+                    <a href="#" data-item="programs" class="link-tab">Programa</a>
+                    <a href="#" data-item="courses" class="link-tab">Cursos</a>
+                </nav>
+            </div>
+            {% if auth.user.id_institucion == codigo_arroba_medellin or auth.user.id_institucion == codigo_sapiencia %}
+                <div id="institution" class="ed-item s-100 item-tab active">
+                    <h3>Cantidad de matriculas por institución</h3>
+                    <br>
+                    <form class="formLimitDate" action="{{ path_for('admin.date.report.institution') }}" class="text-center">
+                        <div class="form-group">
+                            <label for="fechainicia">Inicial</label>
+                            <input type="date" name="fechainicial" class="form-control" id="fechainicia" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="fechafinal">Final</label>
+                            <input type="date" name="fechafinal" class="form-control" id="fechafinal" required>
+                        </div>
+                        <div class="form-group">
+                            <button class="centro btn bg_naranja text-white border-radius-all-25-px">Buscar</button>
+                        </div>
+                    </form>
+                    <div class="content"></div>
+                    {#
+                        {% include '_partials/stats_institutions.twig' %}
+                    #}
+                </div>
+            {% endif %}
+            <div id="programs" class="ed-item s-100 item-tab">
+                <h3>Cantidad de matriculas por programa</h3>
+                <br>
+                <form class="formLimitDate" action="{{ path_for('admin.date.report.program') }}" class="text-center">
+                    <div class="form-group">
+                        <label for="fechainicia">Inicial</label>
+                        <input type="date" name="fechainicial"class="form-control" id="fechainicia" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fechafinal">Final</label>
+                        <input type="date" name="fechafinal"class="form-control" id="fechafinal" required>
+                    </div>
+                    <div class="form-group">
+                        <button class="centro btn bg_naranja text-white border-radius-all-25-px">Buscar</button>
+                    </div>
+                </form>
+                <div class="content"></div>
+                {#
+                    {% include '_partials/stats_programs.twig' %}
+                #}
+            </div>
+            <div id="courses" class="ed-item s-100 item-tab">
+                <h3>Cantidad de matriculas por cursos</h3>
+                <br>
+                <form class="formLimitDate" action="{{ path_for('admin.date.report.course') }}" class="text-center">
+                    <div class="form-group">
+                        <label for="fechainicia">Inicial</label>
+                        <input type="date" name="fechainicial"class="form-control" id="fechainicia" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fechafinal">Final</label>
+                        <input type="date" name="fechafinal"class="form-control" id="fechafinal" required>
+                    </div>
+                    <div class="form-group">
+                        <button class="centro btn bg_naranja text-white border-radius-all-25-px">Buscar</button>
+                    </div>
+                </form>
+                <div class="content"></div>
+                {#
+                    {% include '_partials/stats_courses.twig' %}
+                #}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+    <script src="{{ base_url }}/monitor/public/js/modules/tabs.js"></script>
+    <script src="{{ base_url }}/monitor/public/js/function.js"></script>
+    <script src="{{ base_url }}/monitor/public/js/modules/stats_report.js"></script>
+{% endblock %}

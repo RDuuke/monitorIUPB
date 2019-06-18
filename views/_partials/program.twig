@@ -1,0 +1,52 @@
+<form id="programCreateForm" action="{{ path_for('admin.program.store') }}" method="post">
+    <div class="ed-container">
+        <div class="ed-item s-100 l-100">
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input name="nombre" type="text" class="form-control" {{ getP(modulo_programas) == lectura_escritura ? '' : 'readonly' }} required>
+            </div>
+            <div class="content_visible">
+                <div class="form-group">
+                <label for="instance">Instancia</label>
+                    {% if auth.user.id_institucion != codigo_arroba_medellin %}
+                        <input type="text" name="instance_fake" class="form-control" required value="{{ getNameInstance(auth.user.id_institucion) }}" readonly>
+                        <input type="hidden" id="instance" name="instance" class="form-control" value="{{ getCodigoInstance(auth.user.id_institucion) }}" {{ getP(modulo_programas) == lectura_escritura ? '' : 'readonly' }} required>
+                    {% else %}
+                        <select name="instance" id="instance" class="form-control" {{ getP(modulo_programas) == lectura_escritura ? '' : 'readonly' }} required>
+                            <option>Seleccione</option>
+                            {% for instances in instances %}
+                                <option value="{{ instances.codigo }}">{{ instances.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                <label for="institucion">institucion</label>
+                {% if auth.user.id_institucion != codigo_arroba_medellin %}
+                    <input name="institucion_fake" type="text" class="form-control" value="{{ getInstitution(auth.user.id_institucion) }}" readonly >
+                    <input name="codigo_institucion" id="codigo_institucion" type="hidden" class="form-control" value="{{ auth.user.id_institucion }}" readonly >
+                {% else %}
+                    <select name="codigo_institucion" id="codigo_institucion" class="form-control" required>
+                        <option>Seleccione</option>
+                        {% for institucion in instituciones %}
+                            <option value="{{ institucion.codigo }}">{{ institucion.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                {% endif %}
+                </div>
+            </div>
+            <div class="content_visible">
+                <div class="form-group">
+                    <label for="codigo_program">Código</label>
+                    <input name="codigo_program" type="text" placeholder="ej: 00" class="form-control" {{ getP(modulo_programas) == lectura_escritura ? '' : 'readonly' }}  minlength="2"  maxlength="2" pattern="[0-9]*" required>
+                </div>
+                <div class="form-group">
+                    <input name="codigo" type="number" readonly class="form-control" min="00000" max="99999">
+                </div>
+            </div>
+            {% if getP(modulo_programas) == lectura_escritura %}
+                <button type="submit" class="btn btn-primary">Guardar</button>
+            {% endif %}
+        </div>
+    </div>
+</form>

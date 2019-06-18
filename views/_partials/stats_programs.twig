@@ -1,0 +1,64 @@
+
+<table id="stats-program">
+    <thead>
+    <tr>
+        <th>Programa</th>
+        <th>Código</th>
+        <th>Fecha</th>
+        <th>Total</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for i in programs %}
+        {% if i.course.count > 0 %}
+            <tr>
+                <td>{{ i.nombre }}</td>
+                <td>{{ i.codigo }}</td>
+                <td>{{ i.fecha }}</td>
+                <td>{{ i.course.count }}</td>
+            </tr>
+        {% endif %}
+    {% endfor %}
+    </tbody>
+</table>
+<script>
+    $(document).ready(function() {
+
+        $('#stats-program').DataTable({
+            lengthMenu: [15, 25, 50, 75, 100],
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Registros por pagina: _MENU_ ",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "paginate": {
+                    "first": "Primera",
+                    "last": "Ultima",
+                    "next": "Siguiente <i class='fa fa-angle-right'></i>",
+                    "previous": "<i class='fa fa-angle-left'></i> Anterior"
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            },
+            dom: 'Blfrtip',
+            buttons : [
+                {
+                    extend: 'excel',
+                    title: 'Matriculas_Por_Programa',
+                    text: 'Exportar información en excel <i class="fa fa-file-excel-o"></i>',
+                    className: 'btn btn-info'
+                },
+            ],
+        });
+    });
+</script>

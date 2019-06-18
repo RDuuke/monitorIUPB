@@ -1,0 +1,50 @@
+{% extends "template/template.twig" %}
+{% block styles %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.css"/>
+    <link rel="stylesheet" href="{{ base_url }}/monitor/public/css/modules/tabs.css">
+{% endblock %}
+{% block content %}
+    <div class="ed-container full">
+        <div class="ed-item s-100 l-20 margin-2-em-vertical">
+            <h2 class="text-black text-bold">{{ module_name | title }}</h2>
+        </div>
+        <div class="separator"></div>
+        <div class="ed-item s-100 flex">
+            <a href="{{ path_for('admin.monitoreo') }}" class="btn btn-info"> <i class="fa fa-angle-left"></i> Volver</a>
+        </div>
+        <div class="ed-item ed-container s-100 full">
+            <div class="ed-item l-offset-10 s-100 l-60">
+                <h2><i class="fa fa-desktop"></i> {{ monitor.name }}</h2>
+                <h4>{{ monitor.url }}</h4>
+                <span>Un lugar para encontrar todos los detalles sobre tus monitores.</span>
+                <br>
+                <h3>Tiempo de respuesta</h3>
+                <br>
+                <p>Muestra el "instante" en que el monitor comenzó a devolver una respuesta en ms (y el promedio para el período visualizado es {{ monitor.average }} ms).</p>
+                <br>
+                <canvas id="grafica"></canvas>
+            </div>
+            <div class="ed-item s-100 l-30">
+                <br>
+                <h3>Estado actual</h3>
+                <h4 class="color-{{ monitor.registers.first.response }}"><i class="fa fa-circle"></i> {{ monitor.registers.first.statusresponse }}</h4>
+                <div class="ed-item s-100 ed-container full no-padding flex-column">
+                    <br>
+                    <h3><i class="fa fa-bar-chart"></i> Tiempo de actividad</h3>
+                    <p class="{{ monitor.count24hour >= 70 ? "green" : "red" }}" ><i class="fa fa-genderless"></i> {{ monitor.count24hour }}% Las últimas 24 horas</p>
+                    <p class="{{ monitor.count7days >= 70 ? "green" : "red" }}" ><i class="fa fa-genderless"></i> {{ monitor.count7days }}% Los últimos 7 días</p>
+                    <p class="{{ monitor.count30days >= 70 ? "green" : "red" }}" ><i class="fa fa-genderless"></i> {{ monitor.count30days }}% Los últimos 30 días</p>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+{% block modales %}
+{% endblock %}
+{% block scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="{{ base_url }}/monitor/public/js/modules/details_monitor.js"></script>
+{% endblock %}

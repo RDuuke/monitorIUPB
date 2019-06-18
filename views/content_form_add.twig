@@ -1,0 +1,21 @@
+{% extends "template/template.twig" %}
+{% block styles %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.css"/>
+    <style>
+        @media (min-width: 992px){
+            .modal-lg {
+                max-width: 1075px;
+            }
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="ed-container">
+        <div class="ed-item s-100">
+            <div class="separator"></div>
+            {% include "_partials/" ~ form %}
+            <div class="separator"></div>
+        </div>
+    </div>
+{% endblock %}

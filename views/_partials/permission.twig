@@ -1,0 +1,19 @@
+
+    {% for permission in permissions %}
+        <tr data-id="{{ permission.id }}">
+            <td class="text-capitalize">{{ permission.module.nombre }}</td>
+            {% if (permission.permiso == lectura_escritura) %}
+                <td class="text-center text-capitalize">Sí</td>
+                <td class="text-center text-capitalize">Sí</td>
+            {% elseif (permission.permiso == lectura) %}
+                <td class="text-center text-capitalize">Sí</td>
+                <td class="text-center text-capitalize">No</td>
+            {% else %}
+                <td class="text-center text-capitalize">No</td>
+                <td class="text-center text-capitalize">No</td>
+            {% endif %}
+            {% if getP(modulo_plataforma) == lectura_escritura  %}
+            <td class="text-right"><a data-toggle='tooltip' title='Eliminar todos los permisos' class="permissionRemove icon_a text-danger" href="{{ path_for('admin.student.remove', { 'id' : permission.id}) }}"><i class="fa fa-remove"></i></a></td>
+            {% endif %}
+        </tr>
+    {% endfor %}

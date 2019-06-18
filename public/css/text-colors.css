@@ -1,0 +1,59 @@
+h3 {
+    color: #878786;
+}
+
+a{
+color: #0093AE;
+}
+
+.text-white
+{
+	color: #FFF;
+}
+
+.text-azul-claro {
+    color: #A8CED2;
+}
+
+.text-enlace {
+    color: #0093AE;
+}
+
+.text-gris  {
+    font-weight: 100;
+    font-size: 34px;
+    color: #777777;
+}
+.text-black {
+    color: black;
+}
+
+.text-violeta {
+    color: #591778;
+}
+
+.text-gris-claro{
+     color: #686668;
+}
+
+.text-azul, .text-info, .blue-light, .text-blue-light, .icon_a{
+  color: #009BDD !important;
+}
+.red, .red i {
+    color: #dc3545 !important;
+}
+#nav ul li a:hover {
+    color: #8BBDC1;
+      webkit-transition: all .5s;
+    -moz-transition: all .5s;
+    -ms-transition: all .5s;
+    -o-transition: all .5s;
+    transition: all .5s;
+}
+
+#nav ul li.current.active a {
+    border-bottom: 3px solid #fff;
+  	padding-bottom: 2px;
+
+}
+

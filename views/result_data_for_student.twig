@@ -1,0 +1,95 @@
+{% extends "template/template.twig" %}
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.css"/>
+{% endblock %}
+{% block content %}
+    <div class="separator"></div>
+    <div class="ed-container full">
+        <div class="ed-item s-100 -l-50">
+            <h3>Listado de cursos del usuario</h3>
+            <p><b>Nombre completo: </b>{{ student.nombres | title }} {{ student.apellidos | title }}</p>
+            <p><b>Documento: </b>{{ student.documento }}</p>
+            <p><b>Teléfono: </b>{{ student.telefono }}</p>
+            <p><b>Correo: </b>{{ student.usuario }}</p>
+        </div>
+        <div class="ed-item s-100 -l-50"></div>
+    </div>
+    <div class="separator"></div>
+    <div class="ed-container full search-content">
+        <div class="ed-item s-100">
+            <table>
+                <thead>
+                <tr>
+                    <th>Codigo</th>
+                    <th>Curso</th>
+                    <th>Rol</th>
+                    <th>Instancia</th>
+                    <th>Programa</th>
+                    <th>Institución</th>
+                    <th>Último acceso</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for course in student_data %}
+                    <tr>
+                        <td>{{ course.course.codigo }}</td>
+                        <td><a href="{{ path_for("admin.search.program.course.student", { 'id' : course.course.codigo} )}}">{{ course.course.nombre }}</a></td>
+                        <td>{{ course.rol }}</td>
+                        <td>{{ getInstance(course.course.codigo) }}</td>
+                        <td><a href="{{ path_for("admin.search.program.course", { 'id' : course.course.programs.codigo} ) }}">{{ course.course.programs.nombre }}</a></td>
+                        <td>{{ getInstitution(course.course.codigo, 2) }}</td>
+                        <td>{{ getLastEntry(course.course.codigo, student.usuario) }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="separator"></div>
+
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+
+<script>
+     $('table').DataTable({
+        dom: 'Blfrtip',
+         buttons : [{
+             extend: 'excel',
+             title: 'cursos_por_usuario',
+             text: 'Exportar información en excel <i class="fa fa-file-excel-o"></i>',
+             className: 'btn btn-info'
+         }],
+        lengthMenu: [15, 25, 50, 75, 100 ],
+         language: {
+             "sProcessing":     "Procesando...",
+             "sLengthMenu":     "Registros por pagina: _MENU_ ",
+             "sZeroRecords":    "No se encontraron resultados",
+             "sEmptyTable":     "Ningún dato disponible en esta tabla",
+             "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+             "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+             "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+             "sInfoPostFix":    "",
+             "sSearch":         "Buscar:",
+             "sUrl":            "",
+             "sInfoThousands":  ",",
+             "sLoadingRecords": "Cargando...",
+             "paginate": {
+                 "first":      "Primera",
+                 "last":       "Ultima",
+                 "next":       "Siguiente <i class='fa fa-angle-right'></i>",
+                 "previous":   "<i class='fa fa-angle-left'></i> Anterior"
+             },
+             "oAria": {
+                 "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                 "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+             }
+         },
+     });
+</script>
+{% endblock %}

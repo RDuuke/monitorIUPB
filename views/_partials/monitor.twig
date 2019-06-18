@@ -1,0 +1,30 @@
+<form action="{{ path_for("admon.monitoreo") }}" method="post" id="formMonitor">
+    <div class="ed-container">
+        <div class="ed-item s-100">
+            <div class="form-group">
+                <label for="name">Nombre</label>
+                <input type="text" name="name" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="url">URL o IP</label>
+                <input type="text" name="url" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="name">Intervalo</label>
+                <br>
+                <div class="flex">
+
+                    <input type="number" name="interval"required>
+                    <select name="type" id="type">
+                        <option value="min">Minuto(s)</option>
+                        <option value="hour">Hora(s)</option>
+                        <option value="day">Día(s)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="from-group">
+                <button type="submit" class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+</form>

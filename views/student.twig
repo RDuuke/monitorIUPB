@@ -1,0 +1,147 @@
+{% extends "template/template.twig" %}
+{% block styles %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.css"/>
+<style>
+  @media (min-width: 992px){
+    .modal-lg {
+      max-width: 1075px;
+    }
+  }
+</style>
+{% endblock %}
+{% block content %}
+<div class="ed-container full">
+    <div class="ed-item s-100 l-20 margin-2-em-vertical">
+        <h2 class="text-black text-bold">{{ module_name | title }}</h2>
+    </div>
+    <div class="separator"></div>
+    <div class="ed-item s-100 flex dt-button-collection">
+        <a href="{{ path_for('admin.home') }}" class="btn btn-info"> <i class="fa fa-angle-left"></i> Volver</a>
+        {% if getP(modulo_campus) == lectura_escritura %}
+            <button class="btn btn-primary addstudent" data-href="{{ path_for('admin.students.store') }}">Agregar usuario <i class="fa fa-plus"></i></button>
+
+            <a class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Archivo Anexo1" href="{{ path_for('admin.upload.students') }}">Crear masivamente <i class="fa fa-file-excel-o"></i></a>
+
+            <a class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Archivo Anexo10" href="{{ path_for('admin.view.student.upload.archive') }}"> Archivar masivamente <i class="	fa fa-file-excel-o"></i></a>
+
+            <a class="btn btn-info download-data" href="" data-toggle="tooltip" data-placement="top" title="Exportar información de la tabla"> Exportar <i class="fa fa-download"></i></a>
+        {% endif %}
+    </div>
+    <div class="ed-item s-100">
+    <br>
+        <table id="tb_user" class="display">
+            <thead>
+                <tr>
+                    <th>ID:</th>
+                    <th> {{ "Usuario" | title }}</th>
+                    <th> {{ "nombres" | title }}</th>
+                    <th> {{ "Apellidos" | title }}</th>
+                    <th> {{ "Documento" | title }}</th>
+                    <th> {{ "Institucion" | title }}</th>
+                    <th> {{ "fecha" | title }}</th>
+                    <th> {{ 'Acciones' | title }}</th>
+                    <!--
+                    <th> {{ "Genero" | title }}</th>
+                    <th> {{ "Ciudad" | title }}</th>
+                    <th> {{ "Departamento" | title }}</th>
+                    <th> {{ "Pais" | title }}</th>
+                    <th> {{ "Telefono" | title }}</th>
+                    <th> {{ "Celular" | title }}</th>
+                    <th> {{ "Direccion" | title }}</th>-->
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+{% block modales %}
+{% include "formularios/student.twig" %}
+{% include "formularios/register_student.twig" %}
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+<script>
+var _td = null;
+var table = $('table#tb_user').DataTable({
+        lengthMenu: [ 25, 50, 75, 100 ],
+
+        ajax: {
+            url: getUri + '/panel/students/all',
+            dataSrc: ''
+        },
+        dom: 'Bfrtip',
+        buttons : [{
+            extend: 'excel',
+            title: 'Usuarios',
+            text: 'Exportar información en excel <i class="fa fa-file-excel-o"></i>',
+            className: 'btn btn-info'
+        }],
+
+        columns: [
+            { data: 'id' },
+            { data: 'usuario' },
+            { data: 'nombres' },
+            { data: 'apellidos' },
+            { data: 'documento'},
+            { data: 'institucion' },
+            { data:'fecha',
+              type: 'dd-mm-YYYY',
+                width: '8%'
+            },
+            {% if getP(modulo_campus) == lectura_escritura and auth.user.id_institucion == codigo_arroba_medellin %}
+            { data: null,
+              defaultContent:"<a data-toggle='tooltip' title='Matriculas' href='{{ path_for('admin.search.program.course.student.data', {id : id}) }}' class='icon_a pointer searchRegister' ><i class='fa fa-search'></i></a>&nbsp;<a data-toggle='tooltip' title='Actualizar' href='{{ path_for('admin.students.show', {id : data.id}) }}' class='studentShow pointer icon_a' data-href='{{ path_for('admin.students.update', {id : data.id}) }}'><i class='fa fa-pencil text-sucess'></i></a>&nbsp;<a class='pointer icon_a studentChangePaswword' data-toggle='tooltip' title='Restablecer contraseña' href='{{ path_for('admin.students.reset', {id : id}) }}'><i class=\"fa fa-refresh\"></i></a><a class='pointer icon_a studentArchive' data-toggle='tooltip' title='Archivar usuario' href='{{ path_for('admin.students.archive', {id : id}) }}'><i class=\"fa fa-folder\"></i></a>&nbsp;&nbsp;<a data-toggle='tooltip' title='Eliminar' href='{{ path_for('admin.students.delete', {id : id}) }}' class='studentEliminar pointer icon_a'><i class='fa fa-trash text-danger'></i></a>&nbsp;"
+            , 'width' : '13%'}
+
+            {%  elseif getP(modulo_campus) == lectura_escritura %}
+            { data: null,
+                defaultContent:"<a data-toggle='tooltip' title='Matriculas' href='{{ path_for('admin.search.program.course.student.data', {id : id}) }}' class='icon_a pointer searchRegister' ><i class='fa fa-search'></i></a>&nbsp;<a data-toggle='tooltip' title='Actualizar' href='{{ path_for('admin.students.show', {id : data.id}) }}' class='studentShow pointer icon_a' data-href='{{ path_for('admin.students.update', {id : data.id}) }}'><i class='fa fa-pencil text-sucess'></i></a>&nbsp;<a class='pointer icon_a studentChangePaswword' data-toggle='tooltip' title='Restablecer contraseña' href='{{ path_for('admin.students.reset', {id : id}) }}'><i class=\"fa fa-refresh\"></i></a><a class='pointer icon_a studentArchive' data-toggle='tooltip' title='Archivar usuario' href='{{ path_for('admin.students.archive', {id : id}) }}'><i class=\"fa fa-folder\"></i></a>"
+                , 'width' : '13%'}
+            {% else %}
+            { data: null,
+              defaultContent:"<a data-toggle='tooltip' title='Cursos' href='{{ path_for('admin.search.program.course.student.data', {id : id}) }}' class='icon_a pointer searchRegister' ><i class='fa fa-search'></i></a>&nbsp<a data-toggle='tooltip' title='Información' href='{{ path_for('admin.students.show', {id : data.id}) }}' class='studentShow pointer icon_a' data-href='{{ path_for('admin.students.update', {id : data.id}) }}'><i class='fa fa-pencil blue-light'></i></a>"
+            }
+            {% endif %}
+          ]
+    });
+
+    var table_register = $('table#result_student_register_table').DataTable({
+        lengthMenu: [ 25, 50, 75, 100 ],
+        language: {
+            "sProcessing":     "Procesando...",
+            "sLengthMenu":     "Registros por pagina: _MENU_ ",
+            "sZeroRecords":    "No se encontraron resultados",
+            "sEmptyTable":     "Ningún dato disponible en esta tabla",
+            "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+            "sInfoPostFix":    "",
+            "sSearch":         "Buscar:",
+            "sUrl":            "",
+            "sInfoThousands":  ",",
+            "sLoadingRecords": "Cargando...",
+            "paginate": {
+                "first":      "Primera",
+                "last":       "Ultima",
+                "next":       "Siguiente <i class='fa fa-angle-right'></i>",
+                "previous":   "<i class='fa fa-angle-left'></i> Anterior"
+            },
+            "oAria": {
+                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            }
+        },
+     });
+</script>
+<script src="{{ base_url }}/monitor/public/js/function.js"></script>
+<script src="{{ base_url }}/monitor/public/js/modules/student.js"></script>
+{% endblock %}

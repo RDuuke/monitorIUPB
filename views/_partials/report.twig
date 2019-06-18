@@ -1,0 +1,73 @@
+<table id="report-data">
+    <thead>
+    <tr>
+        <th>Módulos</th>
+        <th>Usuarios - (Activos)</th>
+        <th>Matrículas</th>
+        <th>Cursos</th>
+        <th>Programas</th>
+    </tr>
+    </thead>
+    <tbody>
+        {% for i in institutions %}
+            <tr>
+                <td>{{ i.nombre }}</td>
+                <td>{{ data_table[i.codigo].usuarios }} ({{ data_table[i.codigo].usuarios_activos }})</td>
+                <td>{{ data_table[i.codigo].matriculas }}</td>
+                <td>{{ data_table[i.codigo].cursos }}</td>
+                <td>{{ data_table[i.codigo].programas }}</td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <td>Total</td>
+            <td>{{ data_table[0].usuarios }} ({{ data_table[0].usuarios_activos }})</td>
+            <td>{{ data_table[0].matriculas }}</td>
+            <td>{{ data_table[0].cursos }}</td>
+            <td>{{ data_table[0].programas }}</td>
+        </tr>
+    </tbody>
+</table>
+{% if module_name is not defined  %}
+<script>
+    $(document).ready(function() {
+
+        var table = $('table').DataTable({
+            lengthMenu: [ 25, 50, 75, 100 ],
+            language: {
+                "sProcessing":     "Procesando...",
+                "sLengthMenu":     "Registros por pagina: _MENU_ ",
+                "sZeroRecords":    "No se encontraron resultados",
+                "sEmptyTable":     "Ningún dato disponible en esta tabla",
+                "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix":    "",
+                "sSearch":         "Buscar:",
+                "sUrl":            "",
+                "sInfoThousands":  ",",
+                "sLoadingRecords": "Cargando...",
+                "paginate": {
+                    "first":      "Primera",
+                    "last":       "Ultima",
+                    "next":       "Siguiente <i class='fa fa-angle-right'></i>",
+                    "previous":   "<i class='fa fa-angle-left'></i> Anterior"
+                },
+                "oAria": {
+                    "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            },
+            dom: 'Blfrtip',
+            buttons : [
+                {
+                    extend: 'excel',
+                    title: 'Matriculas',
+                    text: 'Exportar información en excel <i class="fa fa-file-excel-o"></i>',
+                    className: 'btn btn-info'
+                },
+            ],
+
+        });
+    });
+</script>
+{% endif %}

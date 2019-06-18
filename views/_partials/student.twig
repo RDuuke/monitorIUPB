@@ -1,0 +1,76 @@
+<form id="userCreateForm" action="{{ path_for('admin.students.store') }}" method="post">
+    <div class="ed-container">
+        <div class="ed-item s-100 l-50">
+            <div class="form-group">
+                <label for="usuario">Usuario</label>
+                <input name="usuario" type="text" class="form-control" {{ getP(modulo_campus) == lectura_escritura ? '' : 'readonly' }}  required>
+            </div>
+            <div class="form-group">
+                <label for="nombres">Nombres</label>
+                <input name="nombres" type="text" class="form-control" {{ getP(modulo_campus) == lectura_escritura ? '' : 'readonly' }} required>
+            </div>
+            <div class="form-group">
+                <label for="apellidos">Apellidos</label>
+                <input name="apellidos" type="text" class="form-control" {{ getP(modulo_campus) == lectura_escritura ? '' : 'readonly' }} required>
+            </div>
+            <div class="form-group">
+                <label for="documento">Documento</label>
+                <input name="documento"type="number" class="form-control" {{ getP(modulo_campus) == lectura_escritura ? '' : 'readonly' }} required>
+            </div>
+            <div class="form-group">
+                <label for="institucion">Institucion</label>
+                    {% if auth.user.id_institucion != codigo_arroba_medellin %}
+                        <input name="institucion" id="institucion" type="text" class="form-control" value="{{ getInstitution(auth.user.id_institucion) }}" readonly required>
+                        <input name="institucion_id" id="institucion_id" type="hidden" class="form-control" value="{{ auth.user.id_institucion }}" readonly required>
+                    {% else %}
+                        <select name="institucion_user" id="institucion_user" class="form-control" required>
+                            <option value="">Seleccione una opción</option>
+                            {% for institucion in instituciones %}
+                                <option value="{{ institucion.codigo }}">{{ institucion.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                        <input type="hidden" name="institucion_id" id="institucion_id">
+                        <input type="hidden" name="institucion" id="institucion">
+                    {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="genero">Genero</label>
+                <select name="genero" id="genero" class="form-control" {{ getP(modulo_campus) == lectura_escritura ? '' : 'readonly' }}>
+                    <option value="">Seleccione una opción</option>
+                    <option value="F">Femenino</option>
+                    <option value="M">Masculino</option>
+                </select>
+            </div>
+        </div>
+        <div class="ed-item s-100 l-50">
+            <div class="form-group">
+                <label for="pais">Pais</label>
+                <input name="pais" type="text" class="form-control" {{ getP(modulo_campus) == lectura_escritura ? '' : 'readonly' }}>
+            </div>
+            <div class="form-group">
+                <label for="departamento">Departamento</label>
+                <input name="departamento" type="text" class="form-control" {{ getP(modulo_campus) == lectura_escritura ? '' : 'readonly' }}>
+            </div>
+            <div class="form-group">
+                <label for="ciudad">Ciudad</label>
+                <input name="ciudad" type="text" class="form-control" {{ getP(modulo_campus) == lectura_escritura ? '' : 'readonly' }}>
+            </div>
+            <div class="form-group">
+                <label for="telefono">Telefono</label>
+                <input name="telefono" type="text" class="form-control" {{ getP(modulo_campus) == lectura_escritura ? '' : 'readonly' }}>
+            </div>
+            <div class="form-group">
+                <label for="celular">Celular</label>
+                <input name="celular" type="number" class="form-control" {{ getP(modulo_campus) == lectura_escritura ? '' : 'readonly' }}>
+            </div>
+            <div class="form-group">
+                <label for="direccion">Direccion</label>
+                <input name="direccion" type="text" class="form-control" {{ getP(modulo_campus) == lectura_escritura ? '' : 'readonly' }}>
+            </div>
+            {% if getP(modulo_campus) == lectura_escritura  %}
+                <button type="submit" class="btn btn-primary">Guardar</button>
+            {% endif %}
+
+        </div>
+    </div>
+</form>

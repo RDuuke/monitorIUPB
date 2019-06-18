@@ -1,0 +1,63 @@
+<table id="result_student_register_table">
+    <thead>
+    <tr>
+        <th>Codigo</th>
+        <th>Curso</th>
+
+            <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+        {% for register in student_data %}
+            <tr>
+            {% if register.course.codigo == '' %}
+                <td>{{ register.curso }}</td>
+                <td>El Curso no está disponible</td>
+            {% else %}
+                <td>{{ register.course.codigo }}</td>
+                {%  if (getP(modulo_busqueda) == lectura or getP(modulo_busqueda) == lectura_escritura) %}
+                    <td>
+                    <a data-toggle="tooltip" title="Ver información" href="{{ path_for('admin.search.program.course.student', {id : register.course.codigo}) }}">{{ register.course.nombre }}</a>
+                    </td>
+                {% else %}
+                    <td>{{ register.course.nombre }}</a></td>
+                {% endif %}
+                {% if getP(modulo_matriculas) == lectura_escritura %}
+                    <td><a data-toggle="tooltip" title="Desmatricular" style="font-size: 1.5em;color:#009BDD ;"href="{{ path_for('admin.register.archive', {id: register.id}) }}" class="archive_register"><i class="fa fa-folder"></i></a></td>
+                {% endif %}
+            {% endif %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    $("#result_student_register_table").DataTable({
+
+        lengthMenu: [15, 25, 50, 75, 100 ],
+        language: {
+            "sProcessing":     "Procesando...",
+            "sLengthMenu":     "Registros por pagina: _MENU_ ",
+            "sZeroRecords":    "No se encontraron resultados",
+            "sEmptyTable":     "Ninguna matricula disponible",
+            "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+            "sInfoPostFix":    "",
+            "sSearch":         "Buscar:",
+            "sUrl":            "",
+            "sInfoThousands":  ",",
+            "sLoadingRecords": "Cargando...",
+            "paginate": {
+                "first":      "Primera",
+                "last":       "Ultima",
+                "next":       "Siguiente <i class='fa fa-angle-right'></i>",
+                "previous":   "<i class='fa fa-angle-left'></i> Anterior"
+            },
+            "oAria": {
+                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            }
+        },
+    });
+</script>

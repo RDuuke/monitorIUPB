@@ -1,0 +1,51 @@
+{% extends "template/template.twig" %}
+{% block content %}
+<div class="ed-container full">
+    <div class="ed-item s-100 l-20 margin-2-em-vertical">
+        <h2 class="text-black text-bold">{{ module_name | title }}</h2>
+    </div>
+    <div class="separator"></div>
+    <div class="ed-item s-100">
+        <a href="{{ path_for('admin.home') }}" class="btn btn-info"> <i class="fa fa-angle-left"></i> Volver</a>
+    </div>
+    <div class="separator"></div>
+    <div class="ed-item s-100 l-offset-15 l-70 content-home">
+        <div class="ed-container full no-padding">
+            <div class="ed-item s-100 l-1-3 text-center">
+                <div class="content-icon">
+                    <a href="{{ path_for('admin.search.program') }}">
+                        <i class="size_3em fa fa-leanpub"></i> <br>
+                        Búsqueda de programas
+                    </a>
+                </div>
+            </div>
+            <div class="ed-item s-100 l-1-3 text-center">
+                <div class="content-icon">
+                    <a href="{{ path_for('admin.search.course') }}">
+                        <i class="size_3em fa fa-list-alt"></i> <br>
+                        Búsqueda de cursos
+                    </a>
+                </div>
+            </div>
+            <div class="ed-item s-100 l-1-3 text-center">
+                <div class="content-icon">
+                    <a href="{{ path_for('admin.search.student') }}">
+                        <i class="size_3em fa fa-users"></i> <br>
+                        Búsqueda de usuarios
+                    </a>
+                </div>
+            </div>
+            {% if (getP(modulo_reporte) >= lectura ) %}
+            <!--<div class="ed-item s-100 l-1-3 text-center">
+                <div class="content-icon">
+                    <a href="{{ path_for('admin.search.report') }}">
+                        <i class="size_3em fa fa-area-chart"></i> <br>
+                        Reportes
+                    </a>
+                </div>
+            </div>-->
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,116 @@
+{% extends "template/template.twig" %}
+{% block styles %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.css"/>
+<style>
+  @media (min-width: 992px){
+    .modal-lg {
+      max-width: 1075px;
+    }
+  }
+</style>
+{% endblock %}
+{% block content %}
+    <div class="ed-container full">
+        <div class="ed-item s-100 l-20 margin-2-em-vertical">
+            <h2 class="text-black text-bold">{{ module_name | title }}</h2>
+        </div>
+        <div class="separator"></div>
+        <div class="ed-item s-100 flex">
+            <a href="{{ path_for('admin.home') }}" class="btn btn-info"> <i class="fa fa-angle-left"></i> Volver</a>
+            {% if getP(modulo_plataforma) == lectura_escritura  %}
+            <button class="btn btn-primary addstudent" data-href="{{ path_for('admin.users.store') }}">Agregar usuario <i class="fa fa-plus"></i></button>
+            {% endif %}
+        </div>
+
+        <div class="ed-item s-100">
+        <br>
+            <table id="tb_user" class="display">
+                <thead>
+                    <tr>
+                        <th>ID:</th>
+                        <th> {{ "Usuario" | title }}</th>
+                        <th> {{ "nombres" | title }}</th>
+                        <th> {{ "Apellidos" | title }}</th>
+                        <th> {{ "Documento" | title }}</th>
+                        <th> {{ "Institución" | title }}</th>
+                        <th> {{ "Acciones" | title }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+{% block modales %}
+{% include "formularios/user.twig" %}
+{% include "formularios/permission.twig" %}
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+<script>
+const institutions = ['Institución Universitaria Pascual Bravo', 'Institución Universitaria Colegio Mayor de Antioquia', 'Institución Universitaria ITM', 'Ruta N', '@Medellín', 'Secretaría de Salud', 'Secretaría de la Mujer'];
+var _td = null;
+var table = $('#tb_user').DataTable({
+        lengthMenu: [ 25, 50, 75, 100 ],
+        language: {
+            "sProcessing":     "Procesando...",
+            "sLengthMenu":     "Registros por pagina: _MENU_ ",
+            "sZeroRecords":    "No se encontraron resultados",
+            "sEmptyTable":     "Ningún dato disponible en esta tabla",
+            "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+            "sInfoPostFix":    "",
+            "sSearch":         "Buscar:",
+            "sUrl":            "",
+            "sInfoThousands":  ",",
+            "sLoadingRecords": "Cargando...",
+            "paginate": {
+                "first":      "Primera",
+                "last":       "Ultima",
+                "next":       "Siguiente <i class='fa fa-angle-right'></i>",
+                "previous":   "<i class='fa fa-angle-left'></i> Anterior"
+            },
+            "oAria": {
+                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            }
+        },
+        ajax: {
+            url: getUri + '/panel/users/all',
+            dataSrc: ''
+        },
+        columns: [
+            { data: 'id' },
+            { data: 'usuario' },
+            { data: 'nombres' },
+            { data: 'apellidos' },
+            { data: 'documento' },
+            { "data": 'id_institucion',
+                "render" : function(data, type, row, meta) {
+
+                    return ""+institutions[data.substr(1,1)-1]+"";
+                }
+            },
+            {% if getP(modulo_plataforma) == lectura_escritura and auth.user.id_institucion == codigo_arroba_medellin %}
+            { "data": "id",
+                "render": function (data, type, row, meta) {
+                    return '<a class="pointer icon_a userChangePaswword" data-toggle="tooltip" title="Restablecer contraseña" href="'+getUri+'/panel/users/reset/'+data+'"><i class="fa fa-refresh blue-light"></i></a>&nbsp;&nbsp;<a data-toggle="tooltip" title="Permisos"  href="'+getUri+'/panel/users/permission/view/'+data+'" class="userPermission pointer icon_a"><i class="fa fa-key blue-light"></i></a>&nbsp;&nbsp;<a data-toggle="tooltip" title="Eliminar" href="'+getUri+'/panel/users/delete/'+data+'" class="userEliminar pointer icon_a delete_tooltip"><i class="fa fa-trash text-danger"></i></a>&nbsp;&nbsp;<a data-toggle="tooltip" title="Actualizar" href="'+getUri+'/panel/users/show/'+data+'" class="userShow pointer icon_a" data-href="{{ path_for("admin.users.update", {id: id}) }}"><i class="fa fa-pencil text-blue-light"></i></a>';
+                }
+            }
+            {% else %}
+            { "data": "id",
+                "render": function (data, type, row, meta) {
+                    return '<a data-toggle="tooltip" title="Permisos" href="'+getUri+'/panel/users/permission/view/'+data+'" class="userPermission pointer icon_a"><i class="fa fa-lock text-success"></i></a>';
+                }
+            }
+            {% endif %}
+          ]
+    });
+</script>
+<script src="{{ base_url }}/js/function.js"></script>
+<script src="{{ base_url }}/js/modules/user.js"></script>
+{% endblock %}
