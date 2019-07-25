@@ -24,6 +24,7 @@ class Tools {
     const codigoEstadistica = 10;
     const codigoReporte = 9;
     const Lectura = 1;
+    const IUPBinstance = 1;
 
     const LecturaEscritura = 3;
     static protected $UserMessage = [
@@ -64,51 +65,21 @@ class Tools {
     ];
 
     static protected $Institution = [
-        "nombres" => [
-            0 => "Institución Universitaria Pascual Bravo",
-            1 => "Institución Universitaria Colegio Mayor de Antioquia",
-            2 => "Institución Universitaria ITM",
-            3 => "Ruta N",
-            4 => "@Medellín",
-            5 => "Secretaría de Salud",
-            6 => "secretaría de la Mujer",
-            7 => "Sapiencia"
+        "nombre" => [
+            0 => "Institución Universitaria Pascual Bravo"
         ],
         "codigo" => [
-            0 => "01",
-            1 => "02",
-            2 => "03",
-            3 => "04",
-            4 => "05",
-            5 => "06",
-            6 => "07",
-            7 => "08"
+            0 => "01"
         ]
     ];
 
     static protected $InstitutionForCodigo = [
         "01" => "Institución Universitaria Pascual Bravo",
-        "02" => "Institución Universitaria Colegio Mayor de Antioquia",
-        "03" => "Institución Universitaria ITM",
-        "04" => "Ruta N",
-        "05" => "@Medellín",
-        "06" => "Secretaría de Salud",
-        "07" => "Secretaría de la Mujer",
-        "08" => "Sapiencia",
-        "09" => "Secretaría de la juventud"
     ];
 
     static protected $Instance = [
         "nombre" => [
-            1 => "Pregrado",
-            2 => "Posgrado",
-            3 => "FTDH",
-            4 => "Ruta N",
-            5 => "SandBox",
-            6 => "IUPB",
-            8 => "Colegio Mayor",
-            6 => "ITM",
-            7 => "Pascual Bravo"
+            1 => "Pascual Bravo"
         ]
     ];
 
@@ -134,7 +105,7 @@ class Tools {
     ];
 
     static public $Roles = [
-        "student", "teacher", "editingteacher", "manager", "revisor"
+        "student", "teacher", "editingteacher", "manager"
     ];
 
     static protected $tipo = [
@@ -430,14 +401,9 @@ class Tools {
         return $array;
     }
 
-    static function getRegisterForPeriod(string $codigo, string $first, string  $last)
+    static function getRegisterForPeriod(string $first, string  $last)
     {
-        if ($codigo != Tools::codigoMedellin()) {
-            $registers = Register::where("institucion_id", $codigo)
-                ->whereBetween("fecha", [$first, $last])->get();
-        } else {
-            $registers = Register::whereBetween("fecha", [$first, $last])->get();
-        }
+        $registers = Register::whereBetween("fecha", [$first, $last])->get();
         return $registers;
     }
 

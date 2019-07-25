@@ -6,34 +6,8 @@
                 <input name="nombre" type="text" class="form-control" {{ getP(modulo_programas) == lectura_escritura ? '' : 'readonly' }} required>
             </div>
             <div class="content_visible">
-                <div class="form-group">
-                <label for="instance">Instancia</label>
-                    {% if auth.user.id_institucion != codigo_arroba_medellin %}
-                        <input type="text" name="instance_fake" class="form-control" required value="{{ getNameInstance(auth.user.id_institucion) }}" readonly>
-                        <input type="hidden" id="instance" name="instance" class="form-control" value="{{ getCodigoInstance(auth.user.id_institucion) }}" {{ getP(modulo_programas) == lectura_escritura ? '' : 'readonly' }} required>
-                    {% else %}
-                        <select name="instance" id="instance" class="form-control" {{ getP(modulo_programas) == lectura_escritura ? '' : 'readonly' }} required>
-                            <option>Seleccione</option>
-                            {% for instances in instances %}
-                                <option value="{{ instances.codigo }}">{{ instances.nombre }}</option>
-                            {% endfor %}
-                        </select>
-                    {% endif %}
-                </div>
-                <div class="form-group">
-                <label for="institucion">institucion</label>
-                {% if auth.user.id_institucion != codigo_arroba_medellin %}
-                    <input name="institucion_fake" type="text" class="form-control" value="{{ getInstitution(auth.user.id_institucion) }}" readonly >
-                    <input name="codigo_institucion" id="codigo_institucion" type="hidden" class="form-control" value="{{ auth.user.id_institucion }}" readonly >
-                {% else %}
-                    <select name="codigo_institucion" id="codigo_institucion" class="form-control" required>
-                        <option>Seleccione</option>
-                        {% for institucion in instituciones %}
-                            <option value="{{ institucion.codigo }}">{{ institucion.nombre }}</option>
-                        {% endfor %}
-                    </select>
-                {% endif %}
-                </div>
+                <input type="hidden" name="instance" value="{{ instance_iupb }}">
+                <input type="hidden" name="codigo_institucion" value="{{ codigo_iupb }}">
             </div>
             <div class="content_visible">
                 <div class="form-group">

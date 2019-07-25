@@ -18,11 +18,7 @@ class CourseController extends Controller
 
     function all(Request $request, Response $response)
     {
-        if ($this->auth->user()->id_institucion != Tools::codigoMedellin()) {
-            $courses = Course::where('institucion_id', $this->auth->user()->id_institucion)->get();
-        } else {
-            $courses = Course::all();
-        }
+        $courses = Course::all();
         $newResponse = $response->withHeader('Content-type', 'application/json');
         return $newResponse->withJson($courses, 200);
     }
@@ -38,7 +34,6 @@ class CourseController extends Controller
                 $course->codigo = $codigo_evaluate;
                 $course->save();
                 $course->fecha = date('Y-m-d h:i:s');
-
                 Log::i(Tools::getMessageCreaterRegisterModule(Tools::codigoCursos, $this->auth->user()->usuario,  $request->getParam('nombre')), Tools::getTypeCreatorAction());
                 if ($request->isXhr()) {
                     $data = ['message' => 1, 'course' => $course];
@@ -130,16 +125,11 @@ class CourseController extends Controller
 
     function search(Request $request, Response $response)
     {
-        $router = $request->getAttribute('route');
-        $param = $router->getArguments()['params'] . "%";
-
-        if ($this->auth->user()->id_institucion != Tools::codigoMedellin()) {
-            $courses = Course::where("nombre", "LIKE", $param)->orWhere("codigo", "LIKE", $param)->where("institucion_id", $this->auth->user()->id_institucion)->get();
-        } else {
-            $courses = Course::where("nombre","LIKE", $param)->orwhere("codigo","LIKE", $param)->get();
-        }
 
         try {
+            $router = $request->getAttribute('route');
+            $param = $router->getArguments()['params'] . "%";
+            $courses = Course::where("nombre","LIKE", $param)->orwhere("codigo","LIKE", $param)->get();
             return $this->view->render($response, "_partials/search_course.twig", ["courses" => $courses]);
         } catch (\Exception $e) {
             return $response->withStatus(500)->write('0');
@@ -165,13 +155,9 @@ class CourseController extends Controller
                             "id_programa" => substr(trim($worksheet->getCell('A' . $row)->getvalue()), 0 , 5),
                             "codigo" => trim($worksheet->getCell('A' . $row)->getvalue()),
                             "nombre" => trim($worksheet->getCell('B' . $row)->getvalue()),
+                            "institucion_id" => Tools::codigoPascualBravo()
                         ];
-                        if ($this->auth->user()->id_institucion != Tools::codigoMedellin()) {
-                            $data['institucion_id'] = $this->auth->user()->id_institucion;
-                        } else {
-                            $data['institucion_id'] = $request->getParam('codigo_institucion');
 
-                        }
                         if (! Program::checkCodigo($data['id_programa'])) {
                             if (Course::checkCodigo($data['codigo'])) {
                                 $data['message'] = str_replace(":codigo", $data['codigo'], Tools::getMessageCourse(2));
@@ -229,15 +215,7 @@ class CourseController extends Controller
 
     function getTotalOfRegisterForDate(Request $request, Response $response)
     {
-
-        if ($this->auth->user()->id_institucion != Tools::codigoMedellin() && $this->auth->user()->id_institucion != Tools::codigoSapiencia()) {
-            $courses = Course::with([
-                "registers" => function($q) use ($request) {
-                    $q->whereBetween("fecha", [$request->getParam("fechainicial") . " 00:00:00", $request->getParam("fechafinal") . " 23:59:59"]);
-                }
-            ])->where("institucion_id", $this->auth->user()->id_institucion)->get();
-            return $this->view->render($response, "_partials/stats_courses.twig", ["courses" => $courses]);
-        }
+        
         $courses = Course::with([
             "registers" => function($q) use ($request) {
                 $q->whereBetween("fecha", [$request->getParam("fechainicial") . " 00:00:00", $request->getParam("fechafinal") . " 23:59:59"]);

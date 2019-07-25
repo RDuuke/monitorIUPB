@@ -83,23 +83,5 @@ $("#tb_programs").on('click', '.programshow', function (event) {
     $('#programCreateModal').modal('show');
   });
 });
-$("#codigo_institucion").change(function(e){
-  console.log('S');
-  $('input[name="codigo_forma"]').html("");
-  let codigo = $("#instance").val() + $(this).val() + $('input[name="codigo_program"]').val();
-  $('input[name="codigo_forma"]').val(codigo);
-});
 
-$("#instance").change(function(e){
-    console.log('S');
-    $('input[name="codigo_forma"]').html("");
-    let codigo = $(this).val() + $("#codigo_institucion").val() + $('input[name="codigo_program"]').val();
-    $('input[name="codigo_forma"]').val(codigo);
-});
-
-$('input[name="codigo_program"]').blur(function(e){
-  $('input[name="codigo_forma"]').html("");
-  let codigo =  $("#instance").val() + $('#codigo_institucion').val() + $(this).val();
-  $('input[name="codigo_forma"]').val(codigo);
-});
 

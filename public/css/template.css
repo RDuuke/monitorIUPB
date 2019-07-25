@@ -41,7 +41,7 @@ input, a, buttom{
     font-family: 'Roboto' !important;
 }
 a{
-    color: #0093AE;
+    color: #4F93ED;
 }
 input:focus, button:focus, a:focus, select:focus{
     outline: none !important;
@@ -51,8 +51,6 @@ header
 {
     z-index: 1000;
     min-height: 250px;
-    background-repeat: no-repeat;
-    background-image: url(../../resource/img/lupa.png);
     background-size: 311px;
     background-position-x: 20%;
     background-position-y: -10px;
@@ -194,10 +192,10 @@ a.icon_a>i.icon, a.icon_a > i.fa{
 }
 a:hover{
     text-decoration: none;
-    color: #FFFFFF;
+    color: #101010;
 }
 table a:hover {
-    color: #17a2b8;
+    color: #101010;
 }
 button.bg_morado:hover{
     background-color: #732881;
@@ -207,7 +205,7 @@ button.bg_morado:hover{
     text-transform: unset;
 }
 #tablePermission thead {
-    background: #17a2b8;
+    background: #101010;
     font-weight: bold;
     color: #fff;
 }
@@ -229,7 +227,7 @@ button.bg_morado:hover{
     padding: .5em;
 }
 .content-home .fa {
-    color: #009BDD;
+    color: #101010;
     font-size: 5em;
 }
 .list-group {
@@ -312,7 +310,7 @@ button.bg_morado:hover{
     text-transform: capitalize;
 }
 .btn-info, .btn-primary {
-    background-color: #009BDD !important;
+    background-color: #101010 !important;
     color: white !important;
 }
 .btn > .fa {
@@ -343,11 +341,11 @@ button.bg_morado:hover{
     margin-left: 10px;
 }
 .page-item.disabled .page-link, .page-item:first-child .page-link, .page-item:last-child .page-link{
-    color: #009BDD !important;
+    color: #101010 !important;
 }
 .page-item.active .page-link{
     border-radius: 50% !important;
-    background-color: #009BDD !important;
+    background-color: #101010 !important;
 }
 .page-item.active .page-link:hover {
     color: #FFFFFF !important;
@@ -370,7 +368,7 @@ button.bg_morado:hover{
 }
 .dataTables_length select {
     width: 62px !important;
-    border-bottom: 3px solid #009BDD!important;
+    border-bottom: 3px solid #101010!important;
     border-right: none !important;
     border-top: none!important;
     border-left: none!important;
@@ -405,6 +403,9 @@ border-radius: 25px;
 .menu-add-module .btn-username {
     padding: .5em 1em;
 }
+.menu-username .btn-username:hover {
+    color: white !important;
+}
 ::-webkit-input-placeholder {
     font-style: italic;
 }
@@ -422,12 +423,13 @@ input#writing{
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    background-color: #A8CED2;
-    border: 1px solid #0093AE;
+    background-color: #101010;
+    border: 1px solid #101010;
     display: inline-block;
     padding: .8em;
     position: relative;
     border-radius: 25px;
+    color: white;
 }
 input#reading:checked:after,
 input#writing:checked:after{
@@ -436,7 +438,7 @@ input#writing:checked:after{
     position: absolute;
     top: -2px;
     left: 4px;
-    color: #007bff;
+    color: #101010s;
 }
 #modules {
     padding: .5em;

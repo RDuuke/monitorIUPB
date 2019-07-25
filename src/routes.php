@@ -3,8 +3,6 @@
 $app->get("/", "AppController:index")->setName("home")->add( new \App\Middleware\GuestMiddleware($container));
 $app->post("/signin", "AuthController:signin")->setName("signin");
 $app->get("/signout", "AuthController:signout")->setName("signout");
-$app->get("/api/test", "ApiController:user");
-$app->get("/api/v1/student", "ApiController:alluser");
 
 $app->group("/panel", function (){
     /** Controller for view */

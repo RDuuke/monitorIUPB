@@ -20,20 +20,11 @@
             <div class="form-group">
                 <label for="institucion">Institucion</label>
                 {% if getP(modulo_plataforma) == lectura_escritura %}
-                    {% if auth.user.id_institucion != codigo_arroba_medellin %}
-                        <input type="text" class="form-control" value="{{ getInstitution(auth.user.id_institucion) }}" readonly >
-                        <input name="id_institucion" type="hidden" class="form-control" value="{{ auth.user.id_institucion }}" readonly >
-                    {% else %}
-                        <select name="id_institucion" id="institucion" class="form-control" required>
-                            <option value="">Seleccione una opción</option>
-                            {% for institucion in instituciones %}
-                                <option value="{{ institucion.codigo }}">{{ institucion.nombre }}</option>
-                            {% endfor %}
-                        </select>
-                    {% endif %}
+                    <input name="institucion" type="text" class="form-control">
                 {% else %}
-                    <input name="institucion" type="text" class="form-control" readonly value="{{ getInstitution(auth.user.id_institucion) }}" >
+                    <input name="institucion" type="text" class="form-control" readonly value="{{ name_iupb }}">
                 {% endif %}
+                <input name="id_institucion" type="hidden" class="form-control" readonly value="{{ codigo_iupb }}" >
 
             </div>
             {% if getP(modulo_plataforma) == lectura_escritura  %}

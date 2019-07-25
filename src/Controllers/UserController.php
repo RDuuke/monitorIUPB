@@ -14,11 +14,8 @@ class UserController extends Controller
 {
     public function all(Request $request, Response $response)
     {
-        if ($this->auth->user()->id_institucion != Tools::codigoMedellin()) {
-            $users = User::where('id_institucion', $this->auth->user()->id_institucion)->get();
-        } else {
-            $users = User::all();
-        }
+
+        $users = User::all();
         $newResponse = $response->withHeader('Content-type', 'application/json');
         return $newResponse->withJson($users, 200);
     }

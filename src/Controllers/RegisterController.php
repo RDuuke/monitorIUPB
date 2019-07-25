@@ -22,13 +22,9 @@ class RegisterController extends Controller
 
     function all(Request $request, Response $response) : Response
     {
-            if ($this->auth->user()->id_institucion != Tools::codigoMedellin()) {
-                $registers = Register::where('institucion_id', $this->auth->user()->id_institucion)->get();
-            } else {
-                $registers = Register::all();
-            }
-            $newResponse = $response->withHeader('Content-type', 'application/json');
-            return $newResponse->withJson($registers, 200);
+        $registers = Register::all();
+        $newResponse = $response->withHeader('Content-type', 'application/json');
+        return $newResponse->withJson($registers, 200);
     }
 
     function store(Request $request, Response $response)
@@ -158,16 +154,12 @@ class RegisterController extends Controller
                             "curso" => trim($worksheet->getCell('A' . $row)->getvalue()),
                             "usuario" => trim($worksheet->getCell('B' . $row)->getvalue()),
                             "rol" => trim($worksheet->getCell('C' . $row)->getvalue()),
-                            "instancia" => substr(trim($worksheet->getCell('A' . $row)->getvalue()), 0, 1)
+                            "instancia" => Tools::IUPBinstance,
+                            "institucion_id" => Tools::codigoPascualBravo()
                         ];
                         if(empty($data["usuario"])) {
                             unset($data);
                             continue;
-                        }
-                        if ($this->auth->user()->id_institucion != Tools::codigoMedellin()) {
-                            $data['institucion_id'] = $this->auth->user()->id_institucion;
-                        } else {
-                            $data['institucion_id'] = $request->getParam('codigo_institucion');
                         }
                         if (!filter_var(trim($data['usuario']), FILTER_VALIDATE_EMAIL)) {
                             $data['message'] = Tools::getMessageRegister(0);
@@ -342,9 +334,11 @@ class RegisterController extends Controller
                     'usuario' => $dataOK[$i]['usuario'],
                     'curso' => $dataOK[$i]['curso'],
                     'rol' => $register->rol,
-                    'instancia' => $register->instancia
+                    'instancia' => $register->instancia,
+                    'fecha' => $register->fecha
                 ];
-                if ($register->delete() == true and RegisterArchive::create($registerOnRoll) instanceof RegisterArchive) {
+                RegisterArchive::create($registerOnRoll);
+                if ($register->delete() == true) {
                     $c++;
                     continue;
                 }
@@ -362,10 +356,10 @@ class RegisterController extends Controller
     {
         $register = new Register;
         $register->curso = $request->getParam('curso');
-        $register->instancia = substr($request->getParam('curso'), 0, 1);
+        $register->instancia = Tools::IUPBinstance;
         $register->usuario = $request->getParam('usuario');
         $register->rol = $request->getParam('rol');
-        $register->institucion_id = $request->getParam('institucion_id');
+        $register->institucion_id = Tools::codigoPascualBravo();
         return $register;
     }
 

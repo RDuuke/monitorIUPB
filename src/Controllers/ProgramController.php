@@ -13,15 +13,8 @@ class ProgramController extends Controller
 {
     function all(Request $request, Response $response)
     {
-            if ($this->auth->user()->id_institucion != Tools::codigoMedellin()) {
-                $programs = Program::where('codigo_institucion', $this->auth->user()->id_institucion)
-                    ->where("estado", 1)->get();
-
-            } else {
-                $programs = Program::all();
-            }
-            
-            $newResponse = $response->withHeader('Content-type', 'application/json');
+        $programs = Program::all();
+        $newResponse = $response->withHeader('Content-type', 'application/json');
         return $newResponse->withJson($programs, 200);
     }
 
@@ -108,14 +101,10 @@ class ProgramController extends Controller
 
     function search(Request $request, Response $response)
     {
-        $router = $request->getAttribute('route');
-        $param = $router->getArguments()['params']. "%";
-        if ($this->auth->user()->id_institucion != Tools::codigoMedellin()) {
-            $programs = Program::where("nombre","LIKE", $param)->orWhere("codigo", "LIKE", $param)->where("codigo_institucion", $this->auth->user()->id_institucion)->get();
-        } else {
-            $programs = Program::where("nombre","LIKE", $param)->orWhere("codigo", "LIKE", $param)->get();
-        }
         try {
+            $router = $request->getAttribute('route');
+            $param = $router->getArguments()['params']. "%";
+            $programs = Program::where("nombre","LIKE", $param)->orWhere("codigo", "LIKE", $param)->get();
             return $this->view->render($response, "_partials/search_program.twig", ['programs' => $programs]);
         } catch (\Exception $e) {
             return $response->withStatus(500)->write($e->getMessage());
@@ -124,15 +113,6 @@ class ProgramController extends Controller
 
     function getTotalOfRegisterForDate(Request $request, Response $response)
     {
-        if ($this->auth->user()->id_institucion != Tools::codigoMedellin() && $this->auth->user()->id_institucion != Tools::codigoSapiencia()) {
-            $registers = Program::with(["course" => function ($query) use ($request)
-            {
-               $query->with(["registers" => function ($query) use ($request) {
-                   $query->whereBetween("fecha", [ $request->getParam('fechainicial') .' 00:00:00', $request->getParam('fechafinal') . ' 23:59:59']);
-               }]);
-            }])->where("codigo_institucion", $this->auth->user()->id_institucion)->get();
-            return $this->view->render($response, "_partials/stats_programs.twig", ["programs" => $registers]);
-        }
         $registers = Program::with(["course" => function ($query) use ($request)
         {
             $query->with(["registers" => function ($query) use ($request) {

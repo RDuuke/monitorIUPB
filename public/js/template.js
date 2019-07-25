@@ -30,12 +30,6 @@ $("#instance").change(function(e){
     $('input[name="codigo"]').val(codigo);
 });
 
-$('input[name="codigo_program"]').blur(function(e){
-    $('input[name="codigo"]').html("");
-    let codigo =  $("#instance").val() + $('#codigo_institucion').val() + $(this).val();
-    $('input[name="codigo"]').val(codigo);
-});
-
 $("#id_programa").change(function(e){
     console.log('S');
     let codigo = $(this).val() + $('input[name="codigo"]').val();
@@ -60,4 +54,12 @@ $("#userCreateModal").on('change', '#institucion_user', function (e) {
     var select = document.getElementById("institucion_user");
     $(this).next().val($(this).val());
     $(this).next().next().val(select.options[select.selectedIndex].text);
+});
+
+
+$('input[name="codigo_program"]').blur(function(e){
+    $('input[name="codigo_forma"]').html("");
+    let codigo =  $("[name='instance']").val() + $("[name='codigo_institucion']").val() + $(this).val();
+    console.log(codigo);
+    $('input[name="codigo"]').val(codigo);
 });

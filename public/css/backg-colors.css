@@ -1,15 +1,17 @@
 .bg_azul {
-    background-color: #2C9FC2;
+    background-color: #101010;
 }
 
 .bg_azul_oscuro {
-    background: #1493B2;
+    background: #101010;
 }
 
 .bg_gris_claro, .bg-gray {
     background: #F2F2F2;
 }
-
+.b-degrade-gray {
+    background: linear-gradient(to bottom, #ededed 0%,#cccccc 100%);
+}
 .bg_morado
 {
     background-color: #732881;

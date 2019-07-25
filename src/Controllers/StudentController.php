@@ -99,15 +99,13 @@ class StudentController extends Controller
             return $response->withStatus(500)->write('0');
         }
     }
+
     function all(Request $request, Response $response) : Response
     {
-            if($this->auth->user()->id_institucion != Tools::codigoMedellin()) {
-                $students = Student::where('institucion_id', $this->auth->user()->id_institucion)->get();
-            } else {
-                $students = Student::all();
-            }
-            $newResponse = $response->withHeader('Content-type', 'application/json');
-            return $newResponse->withJson($students, 200);
+
+        $students = Student::all();
+        $newResponse = $response->withHeader('Content-type', 'application/json');
+        return $newResponse->withJson($students, 200);
     }
 
     /**
@@ -137,23 +135,18 @@ class StudentController extends Controller
                             "apellidos" => trim($worksheet->getCell('D'. $row)->getvalue()),
                             "correo" => trim($worksheet->getCell('A'. $row)->getvalue()),
                             "documento" => trim($worksheet->getCell('E'. $row)->getvalue()),
-                            "institucion" => trim($worksheet->getCell("F". $row)->getValue()),
+                            "institucion" => Tools::nombrePascualBravo(),
                             "genero" => trim($worksheet->getCell('G'. $row)->getvalue()),
                             "ciudad" => trim($worksheet->getCell('H'. $row)->getvalue()),
                             "departamento" => trim($worksheet->getCell('I'. $row)->getvalue()),
                             "pais" => trim($worksheet->getCell('J'. $row)->getvalue()),
                             "telefono" => trim($worksheet->getCell('K'. $row)->getvalue()),
                             "celular" => trim($worksheet->getCell('L'. $row)->getvalue()),
-                            "direccion" => trim($worksheet->getCell('M'. $row)->getvalue())
+                            "direccion" => trim($worksheet->getCell('M'. $row)->getvalue()),
+                            "institucion_id" => Tools::codigoPascualBravo(),
                         ];
 
-                        if ($this->auth->user()->id_institucion != Tools::codigoMedellin()) {
-                            $data["institucion"] = !empty($data["institucion"]) ? $data["institucion"] : Institution::getNameInstitutionForCodigo($this->auth->user()->id_institucion);
-                            $data["institucion_id"] = $this->auth->user()->id_institucion;
-                        } else {
-                            $data["institucion"] = !empty($data["institucion"]) ? $data["institucion"] :  Institution::getNameInstitutionForCodigo($request->getParam('codigo_institucion'));
-                            $data["institucion_id"] = $request->getParam('codigo_institucion');
-                        }
+
                         $data = array_map("ucwords", array_map("strtolower",$data));
                         $data['usuario'] = strtolower($data['usuario']);
                         $data['correo'] = strtolower($data['correo']);
@@ -194,7 +187,6 @@ class StudentController extends Controller
                                 continue;
                         } else {
                             $filter = $student->where('documento',$data['documento']);
-
                             if($filter->count() == 0) {
                                 $data['message'] = str_replace(":documento", $student[0]->documento, Tools::getMessageUser(1));
                                 $data['codigo'] = Tools::getCodigoUser(1);
@@ -247,16 +239,10 @@ class StudentController extends Controller
 
         $router = $request->getAttribute('route');
         $param = $router->getArguments()['params']. "%";
-        if ($this->auth->user()->id_institucion != Tools::codigoMedellin()) {
-            $students = Student::where("usuario", "LIKE", $param)
-                ->where("institucion_id", $this->auth->user()->id_institucion)
-                ->orWhere("documento", "LIKE", $param)
-                ->get()->toArray();
-        } else {
-            $students = Student::where("usuario","LIKE", $param)
-                ->orWhere("documento", "LIKE", $param)
-                ->get()->toArray();
-        }
+
+        $students = Student::where("usuario","LIKE", $param)
+        ->orWhere("documento", "LIKE", $param)
+        ->get()->toArray();
         try {
             return $this->view->render($response, "_partials/search_student.twig", ["students" => $students]);
         } catch (\Exception $e) {

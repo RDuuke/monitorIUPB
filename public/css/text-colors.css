@@ -2,9 +2,6 @@ h3 {
     color: #878786;
 }
 
-a{
-color: #0093AE;
-}
 
 .text-white
 {
@@ -16,7 +13,7 @@ color: #0093AE;
 }
 
 .text-enlace {
-    color: #0093AE;
+    color: #101010;
 }
 
 .text-gris  {
@@ -37,7 +34,7 @@ color: #0093AE;
 }
 
 .text-azul, .text-info, .blue-light, .text-blue-light, .icon_a{
-  color: #009BDD !important;
+  color: #101010 !important;
 }
 .red, .red i {
     color: #dc3545 !important;

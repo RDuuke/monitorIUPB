@@ -14,10 +14,10 @@
     text-transform: capitalize;
 }
 #menu > li:hover, #menu > li.active, .in {
-    border-bottom: #2C9FC2 7px solid !important;
+    border-bottom: #101010 7px solid !important;
 }
 #menu li a {
-    color: #FFFFFF;
+    color: #101010;
     text-transform: capitalize !important;
     font-weight: bold;
 }
@@ -26,7 +26,7 @@
     padding-top: 20px;
 }
 .btn-username {
-    background-color: #009BDD;
+    background-color: #101010;
     color: white;
     padding: .5em 2em;
     border-radius: 25px;
@@ -70,6 +70,6 @@
     z-index: 10000;
 }
 .menu-add-module .dropdown-1 i{
-    color: #009BDD !important;
+    color: #101010 !important;
     margin-right: 10px;
 }

@@ -54,11 +54,7 @@ class AppController extends Controller
         }
         //$rols = Rol::all();
         $institutions =Institution::all();
-        if ($this->auth->user()->id_institucion != Tools::codigoMedellin()) {
-            $modules = Module::public();
-        } else {
-            $modules = Module::all();
-        }
+        $modules = Module::all();
         Log::i(Tools::getEnterModuleMessage(Tools::codigoUsuarioPlataforma, $this->auth->user()->usuario), Tools::getTypeAction(3));
 
         return $this->view->render($response, "user.twig", ["instituciones" => $institutions, "modules" => $modules, 'module_name' => Tools::$Modules[Tools::codigoUsuarioPlataforma], "menu_active" => Tools::$MenuActive[0]]);
@@ -94,11 +90,6 @@ class AppController extends Controller
             Log::a(Tools::getTryEnterModuleMessage(Tools::codigoProgramas, $this->auth->user()->usuario), Tools::getTypeAction(3));
             return $response->withRedirect($this->router->pathFor('admin.home'));
         }
-        if ($this->auth->user()->id_institucion != Tools::codigoMedellin()) {
-            $instances = Manager::table('instancia')->whereIn('codigo', [1, 2])->orWhere('institucion_id', $this->auth->user()->id_institucion)->get();
-        }else {
-            $instances = Instance::all();
-        }
         $institutions =Institution::all();
         Log::i(Tools::getEnterModuleMessage(Tools::codigoProgramas, $this->auth->user()->usuario), Tools::getTypeAction(3));
         return $this->view->render($response, "program.twig", ["instituciones" => $institutions, 'instances' => $instances, 'module_name' => Tools::$Modules[Tools::codigoProgramas], "menu_active" => Tools::$MenuActive[0]]);
@@ -120,13 +111,7 @@ class AppController extends Controller
             Log::a(Tools::getTryEnterModuleMessage(Tools::codigoCursos, $this->auth->user()->usuario), Tools::getTypeAction(3));
             return $response->withRedirect($this->router->pathFor('admin.home'));
         }
-        if ($this->auth->user()->id_institucion != Tools::codigoMedellin()) {
-            $programs = Program::where('codigo_institucion', $this->auth->user()->id_institucion)
-                ->where("estado", 1)->get();
-        } else {
-            $programs = Program::all();
-        }
-        $institutions = Institution::all();
+        $programs = Program::all();
         Log::i(Tools::getEnterModuleMessage(Tools::codigoCursos, $this->auth->user()->usuario), Tools::getTypeAction(3));
         return $this->view->render($response, "courses.twig", ["programs" => $programs, "module_name" => Tools::$Modules[Tools::codigoCursos], "menu_active" => Tools::$MenuActive[0], "institutions" => $institutions]);
     }
@@ -137,15 +122,11 @@ class AppController extends Controller
             Log::a(Tools::getTryEnterModuleMessage(Tools::codigoReporte, $this->auth->user()->usuario), Tools::getTypeAction(3));
             return $response->withRedirect($this->router->pathFor('admin.home'));
         }
-        if ($this->auth->user()->id_institucion != Tools::codigoMedellin() and $this->auth->user()->id_institucion != Tools::codigoSapiencia()) {
-            $institutions = Institution::where("codigo", $this->auth->user()->id_institucion)->get();
-            $programs = Program::where("codigo_institucion", $this->auth->user()->id_institucion)->get();
-            $courses = Course::where("institucion_id", $this->auth->user()->id_institucion)->get();
-        } else {
-            $institutions = Institution::all();
-            $programs = Program::all();
-            $courses = Course::all();
-        }
+
+        $institutions = Institution::all();
+        $programs = Program::all();
+        $courses = Course::all();
+
         Log::i(Tools::getEnterModuleMessage(Tools::codigoReporte, $this->auth->user()->usuario), Tools::getTypeAction(3));
         return $this->view->render($response, "stats.twig", ["module_name" => Tools::$Modules[Tools::codigoReporte], "menu_active" => Tools::$MenuActive[0], "institutions" => $institutions, "programs" => $programs, "courses" => $courses]);
     }
@@ -228,13 +209,7 @@ class AppController extends Controller
         if (!$this->accessModuleReadAndWrite($response,Tools::codigoProgramas)) {
             return $response->withRedirect($this->router->pathFor('admin.home'));
         }
-        if ($this->auth->user()->id_institucion != Tools::codigoMedellin()) {
-            $instances = Manager::table('instancia')->whereIn('codigo', [1, 2])->orWhere('institucion_id', $this->auth->user()->id_institucion)->get();
-        }else {
-            $instances = Instance::all();
-        }
-        $institutions =Institution::all();
-        return $this->view->render($response, "content_form_add.twig", ["form" => "program.twig", "instances" => $instances, "instituciones" => $institutions, "module_name" => ["Programas#admin.program", "Agregar Programas"], "menu_active" => Tools::$MenuActive[0]]);
+        return $this->view->render($response, "content_form_add.twig", ["form" => "program.twig", "module_name" => ["Programas#admin.program", "Agregar Programas"], "menu_active" => Tools::$MenuActive[0]]);
     }
 
     public function courseAdd(Request $request, Response $response)
@@ -242,15 +217,8 @@ class AppController extends Controller
         if (!$this->accessModuleReadAndWrite($response,Tools::codigoCursos)) {
             return $response->withRedirect($this->router->pathFor('admin.home'));
         }
-        if ($this->auth->user()->id_institucion != Tools::codigoMedellin()) {
-            $programs = Program::where('codigo_institucion', $this->auth->user()->id_institucion)
-                ->where("estado", 1)->get();
-        } else {
-
-            $programs = Program::all();
-        }
-        $institutions = Institution::all();
-        return $this->view->render($response, "content_form_add.twig", ["form" => "course.twig", "module_name" => ["Cursos#admin.courses", "Agregar curso"], "programs" => $programs, "menu_active" => Tools::$MenuActive[0],  "institutions" => $institutions]);
+        $programs = Program::all();
+        return $this->view->render($response, "content_form_add.twig", ["form" => "course.twig", "module_name" => ["Cursos#admin.courses", "Agregar curso"], "programs" => $programs, "menu_active" => Tools::$MenuActive[0]]);
     }
 
     public function instanceAdd(Request $request, Response $response)

@@ -97,15 +97,11 @@ var table = $('table#tb_user').DataTable({
               type: 'dd-mm-YYYY',
                 width: '8%'
             },
-            {% if getP(modulo_campus) == lectura_escritura and auth.user.id_institucion == codigo_arroba_medellin %}
+            {% if getP(modulo_campus) == lectura_escritura %}
             { data: null,
               defaultContent:"<a data-toggle='tooltip' title='Matriculas' href='{{ path_for('admin.search.program.course.student.data', {id : id}) }}' class='icon_a pointer searchRegister' ><i class='fa fa-search'></i></a>&nbsp;<a data-toggle='tooltip' title='Actualizar' href='{{ path_for('admin.students.show', {id : data.id}) }}' class='studentShow pointer icon_a' data-href='{{ path_for('admin.students.update', {id : data.id}) }}'><i class='fa fa-pencil text-sucess'></i></a>&nbsp;<a class='pointer icon_a studentChangePaswword' data-toggle='tooltip' title='Restablecer contraseña' href='{{ path_for('admin.students.reset', {id : id}) }}'><i class=\"fa fa-refresh\"></i></a><a class='pointer icon_a studentArchive' data-toggle='tooltip' title='Archivar usuario' href='{{ path_for('admin.students.archive', {id : id}) }}'><i class=\"fa fa-folder\"></i></a>&nbsp;&nbsp;<a data-toggle='tooltip' title='Eliminar' href='{{ path_for('admin.students.delete', {id : id}) }}' class='studentEliminar pointer icon_a'><i class='fa fa-trash text-danger'></i></a>&nbsp;"
             , 'width' : '13%'}
-
-            {%  elseif getP(modulo_campus) == lectura_escritura %}
-            { data: null,
-                defaultContent:"<a data-toggle='tooltip' title='Matriculas' href='{{ path_for('admin.search.program.course.student.data', {id : id}) }}' class='icon_a pointer searchRegister' ><i class='fa fa-search'></i></a>&nbsp;<a data-toggle='tooltip' title='Actualizar' href='{{ path_for('admin.students.show', {id : data.id}) }}' class='studentShow pointer icon_a' data-href='{{ path_for('admin.students.update', {id : data.id}) }}'><i class='fa fa-pencil text-sucess'></i></a>&nbsp;<a class='pointer icon_a studentChangePaswword' data-toggle='tooltip' title='Restablecer contraseña' href='{{ path_for('admin.students.reset', {id : id}) }}'><i class=\"fa fa-refresh\"></i></a><a class='pointer icon_a studentArchive' data-toggle='tooltip' title='Archivar usuario' href='{{ path_for('admin.students.archive', {id : id}) }}'><i class=\"fa fa-folder\"></i></a>"
-                , 'width' : '13%'}
+            
             {% else %}
             { data: null,
               defaultContent:"<a data-toggle='tooltip' title='Cursos' href='{{ path_for('admin.search.program.course.student.data', {id : id}) }}' class='icon_a pointer searchRegister' ><i class='fa fa-search'></i></a>&nbsp<a data-toggle='tooltip' title='Información' href='{{ path_for('admin.students.show', {id : data.id}) }}' class='studentShow pointer icon_a' data-href='{{ path_for('admin.students.update', {id : data.id}) }}'><i class='fa fa-pencil blue-light'></i></a>"
@@ -142,6 +138,6 @@ var table = $('table#tb_user').DataTable({
         },
      });
 </script>
-<script src="{{ base_url }}/monitor/public/js/function.js"></script>
-<script src="{{ base_url }}/monitor/public/js/modules/student.js"></script>
+<script src="{{ base_url }}/monitor_iupb/public/js/function.js"></script>
+<script src="{{ base_url }}/monitor_iupb/public/js/modules/student.js"></script>
 {% endblock %}

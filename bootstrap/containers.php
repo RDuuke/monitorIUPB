@@ -22,8 +22,8 @@ use Slim\Flash\Messages;
 $container = $app->getContainer();
 $capsule = new Manager;
 $capsule->addConnection($container['settings']['db']);
+$capsule->addConnection($container['settings']['db_moodle'], "db_moodle");
 /*
-$capsule->addConnection($container['settings']['db_pregrado'], "db_pregrado");
 $capsule->addConnection($container['settings']['db_postgrado'], "db_postgrado");
 $capsule->addConnection($container['settings']['db_itm'], "db_itm");
 $capsule->addConnection($container['settings']['db_colmayor'], "db_colmayor");
@@ -70,6 +70,9 @@ $container['view'] = function ($container) {
     $view->getEnvironment()->addGlobal('modulo_reporte', Tools::codigoReporte);
     $view->getEnvironment()->addGlobal('codigo_arroba_medellin', Tools::codigoMedellin());
     $view->getEnvironment()->addGlobal('codigo_sapiencia', Tools::codigoSapiencia());
+    $view->getEnvironment()->addGlobal('name_iupb', Tools::getInstitutionForCodigo(Tools::codigoPascualBravo()));
+    $view->getEnvironment()->addGlobal('codigo_iupb', Tools::codigoPascualBravo());
+    $view->getEnvironment()->addGlobal('instance_iupb', Tools::IUPBinstance);
     $view->getEnvironment()->addGlobal('lectura', Tools::Lectura);
     $view->getEnvironment()->addGlobal('lectura_escritura', Tools::LecturaEscritura);
     $view->getEnvironment()->addGlobal('session', $_SESSION);
@@ -133,7 +136,7 @@ $container['view'] = function ($container) {
 
     $function = new Twig_SimpleFunction('getP', function ($modulo) {
 
-        return isset($_SESSION['permission']['modules'][$modulo]['permiso']) ? $_SESSION['permission']['modules'][$modulo]['permiso'] : false;
+        return Auth::getPermissionForModule($modulo);
     });
     $view->getEnvironment()->addFunction($function);
 
@@ -180,15 +183,7 @@ $container['view'] = function ($container) {
                                                         AND co.idnumber=$codigo";
 
         if (substr($codigo, 0, 1) == 1) {
-            $data = Manager::connection("db_pregrado")->select($sql);
-        } else if(substr($codigo, 0, 1) == 2) {
-            $data = Manager::connection("db_postgrado")->select($sql);
-        } else if(substr($codigo, 0, 1) == 6){
-            $data = Manager::connection("db_itm")->select($sql);
-        } else if(substr($codigo, 0, 1) == 7) {
-            $data = Manager::connection("db_pascual")->select($sql);
-        } else if(substr($codigo, 0, 1) == 8) {
-            $data = Manager::connection("db_colmayor")->select($sql);
+            $data = Manager::connection("db_moodle")->select($sql);
         } else {
             return "no registro";
         }
