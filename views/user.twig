@@ -95,7 +95,7 @@ var table = $('#tb_user').DataTable({
                     return ""+institutions[data.substr(1,1)-1]+"";
                 }
             },
-            {% if getP(modulo_plataforma) == lectura_escritura %}
+            {% if getP(modulo_plataforma) == lectura_escritura and auth.user.id_institucion == codigo_arroba_medellin %}
             { "data": "id",
                 "render": function (data, type, row, meta) {
                     return '<a class="pointer icon_a userChangePaswword" data-toggle="tooltip" title="Restablecer contraseña" href="'+getUri+'/panel/users/reset/'+data+'"><i class="fa fa-refresh blue-light"></i></a>&nbsp;&nbsp;<a data-toggle="tooltip" title="Permisos"  href="'+getUri+'/panel/users/permission/view/'+data+'" class="userPermission pointer icon_a"><i class="fa fa-key blue-light"></i></a>&nbsp;&nbsp;<a data-toggle="tooltip" title="Eliminar" href="'+getUri+'/panel/users/delete/'+data+'" class="userEliminar pointer icon_a delete_tooltip"><i class="fa fa-trash text-danger"></i></a>&nbsp;&nbsp;<a data-toggle="tooltip" title="Actualizar" href="'+getUri+'/panel/users/show/'+data+'" class="userShow pointer icon_a" data-href="{{ path_for("admin.users.update", {id: id}) }}"><i class="fa fa-pencil text-blue-light"></i></a>';
@@ -111,6 +111,6 @@ var table = $('#tb_user').DataTable({
           ]
     });
 </script>
-<script src="{{ base_url }}/monitor_iupb/public/js/function.js"></script>
-<script src="{{ base_url }}/monitor_iupb/public/js/modules/user.js"></script>
+<script src="{{ base_url }}/gestion/public/js/function.js"></script>
+<script src="{{ base_url }}/gestion/public/js/modules/user.js"></script>
 {% endblock %}

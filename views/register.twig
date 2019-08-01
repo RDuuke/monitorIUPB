@@ -107,10 +107,17 @@
             },
             { data: 'rol' },
             { data: 'fecha'},
-            {% if getP(modulo_matriculas) == lectura_escritura %}
+            {% if getP(modulo_matriculas) == lectura_escritura and auth.user.id_institucion == codigo_arroba_medellin %}
             { "data": "id",
               "render": function (data, type, row, meta) {
                     return '<a data-toggle="tooltip" title="Desmatricular" class="archive_register icon_a" href="'+getUri+'/panel/register/archive/'+data+'" ><i class="fa fa-folder"></i></a>&nbsp;<a data-toggle="tooltip" title="Eliminar" href="'+getUri+'/panel/register/delete/'+data+'" class="registertEliminar pointer icon_a"><i class="fa fa-trash text-danger"></i></a>&nbsp;<a data-toggle="tooltip" title="Actualizar" href="'+getUri+'/panel/register/show/'+data+'" class="registerShow pointer icon_a" data-href="{{ path_for("admin.update.register", {id : data.id}) }}"><i class="fa fa-pencil"></i></a>';
+                    //return '<a>'+data+'<a>';
+                }
+            }
+            {%  elseif getP(modulo_matriculas) == lectura_escritura %}
+            { "data": "id",
+                "render": function (data, type, row, meta) {
+                    return '<a data-toggle="tooltip" title="Desmatricular" class="archive_register icon_a" href="'+getUri+'/panel/register/archive/'+data+'" ><i class="fa fa-folder"></i></a>&nbsp;<a data-toggle="tooltip" title="Actualizar" href="'+getUri+'/panel/register/show/'+data+'" class="registerShow pointer icon_a" data-href="{{ path_for("admin.update.register", {id : data.id}) }}"><i class="fa fa-pencil"></i></a>';
                     //return '<a>'+data+'<a>';
                 }
             }
